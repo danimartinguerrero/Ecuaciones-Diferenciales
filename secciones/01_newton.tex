@@ -1,0 +1,68 @@
+\section{Ley de Newton del enfriamiento}
+
+La ley de Newton describe el intercambio de calor de un cuerpo con su entorno cuando domina la convección y la diferencia de temperaturas es moderada: la tasa de variación de la temperatura es proporcional a dicha diferencia.
+
+\begin{modelo}[enfriamiento de Newton]
+Sean $T(t)$ la temperatura del cuerpo y $S(t)$ la del entorno. Entonces
+\begin{equation}
+  \dv{T}{t} = -k\,\bigl(T - S\bigr), \qquad T(0)=T_0,
+  \label{eq:newton}
+\end{equation}
+con $k>0$ constante de enfriamiento, $[k]=\si{\per\second}$.
+\end{modelo}
+
+\begin{remark}
+El signo de \eqref{eq:newton} expresa que el calor fluye del cuerpo más caliente al más frío: si $T>S$ entonces $\dot T<0$, y si $T<S$ entonces $\dot T>0$.
+\end{remark}
+
+\subsection*{Entorno a temperatura constante}
+
+Si el entorno es un foco térmico ideal, $S(t)\equiv S_0$, y \eqref{eq:newton} es lineal de coeficientes constantes: $\dot T + kT = kS_0$.
+
+\begin{proposition}[solución del problema de Newton]\label{prop:newton}
+La solución del problema \eqref{eq:newton} con $S\equiv S_0$ es
+\begin{equation}
+  T(t) = S_0 + (T_0 - S_0)\,\ee^{-kt},
+  \label{eq:newton-sol}
+\end{equation}
+y $T(t)\to S_0$ cuando $t\to\infty$.
+\end{proposition}
+
+\begin{proof}
+La ecuación homogénea $\dot T + kT=0$ tiene solución general $T_h = C\,\ee^{-kt}$, y $T_p\equiv S_0$ es una solución particular. Luego $T = S_0 + C\,\ee^{-kt}$, y la condición inicial $T(0)=T_0$ da $C=T_0-S_0$. Como $k>0$, el término exponencial tiende a cero.
+\end{proof}
+
+\begin{remark}
+La magnitud $\tau = 1/k$ es la \emph{constante de tiempo}: la diferencia $T-S_0$ se reduce en un factor $\ee^{-1}$ cada $\tau$.
+\end{remark}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=120, ymin=0, ymax=120,
+      xlabel={$t$ (\si{\minute})}, ylabel={$T$ (\si{\celsius})},
+      legend style={at={(0.97,0.62)}}]
+      \addplot[asintota, forget plot, domain=0:120, samples=2] {20};
+      \node[font=\small, text=gris, anchor=south east] at (axis cs:118,21) {$S_0$};
+      \addplot[serie1, domain=0:120, samples=100] {20 + 90*exp(-0.04*x)};
+      \addlegendentry{$T_0>S_0$}
+      \addplot[serie2, domain=0:120, samples=100] {20 - 15*exp(-0.04*x)};
+      \addlegendentry{$T_0<S_0$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Ley de Newton con $S_0=\SI{20}{\celsius}$ y $k=\SI{0,04}{\per\minute}$. Toda solución converge a $S_0$.}
+  \label{fig:newton}
+\end{figure}
+
+\begin{example}
+Un cuerpo a $T_0=\SI{90}{\celsius}$ se sitúa en un entorno a $S_0=\SI{20}{\celsius}$. Tras \SI{10}{\minute} su temperatura es \SI{60}{\celsius}. Determinar $k$ y el instante en que alcanza \SI{30}{\celsius}.
+
+De \eqref{eq:newton-sol}, $60 = 20 + 70\,\ee^{-10k}$, luego
+\[
+  k = \tfrac{1}{10}\ln\tfrac{70}{40} \approx \SI{0,056}{\per\minute}.
+\]
+Imponiendo $T(t)=30$: $\ee^{-kt}=\tfrac{10}{70}$, de donde
+$t = \tfrac{1}{k}\ln 7 \approx \SI{34,8}{\minute}$.\finejemplo
+\end{example}
+
+\newpage

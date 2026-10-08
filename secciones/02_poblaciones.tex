@@ -1,0 +1,186 @@
+\section{Dinámica de poblaciones}
+
+Sea $P(t)$ el tamaño de una población. Los modelos de esta sección son ecuaciones autónomas $\dot P = f(P)$, donde $f(P)=P\,g(P)$ y $g$ es la tasa de crecimiento per cápita. Los modelos difieren en la forma de $g$.
+
+\subsection{El modelo de Malthus}
+
+\begin{definicion}[Modelo de Malthus]{Modelo de Malthus}
+La tasa de crecimiento per cápita es constante, $g\equiv k$:
+\begin{equation}
+  \dv{P}{t} = kP, \qquad P(0)=P_0>0,
+  \label{eq:malthus}
+\end{equation}
+donde $k=\text{natalidad}-\text{mortalidad}$.
+\end{definicion}
+
+Por separación de variables, $\int \dd P/P = \int k\,\dd t$, y por tanto
+\begin{equation}
+  P(t) = P_0\,\ee^{kt}.
+  \label{eq:malthus-sol}
+\end{equation}
+
+Si $k>0$ la población crece exponencialmente, con tiempo de duplicación $t_2=\ln 2/k$; si $k<0$ se extingue exponencialmente. En ambos casos el modelo carece de límite superior, lo que lo hace inválido a largo plazo cuando los recursos son finitos.
+
+\subsection{El modelo logístico}
+
+\begin{definicion}[Modelo logístico]{Modelo logístico (Verhulst)}
+La tasa per cápita decrece linealmente con $P$ y se anula en la capacidad de carga $M>0$:
+\begin{equation}
+  \dv{P}{t} = rP\Bigl(1-\frac{P}{M}\Bigr), \qquad P(0)=P_0>0,
+  \label{eq:logistica}
+\end{equation}
+con $r>0$ la tasa de crecimiento intrínseca.
+\end{definicion}
+
+La ecuación \eqref{eq:logistica} es de Bernoulli con exponente $2$. Sus equilibrios son $P=0$ (inestable) y $P=M$ (asintóticamente estable).
+
+\begin{proposition}[solución logística]\label{prop:logistica}
+La solución de \eqref{eq:logistica} es
+\begin{equation}
+  P(t) = \frac{M P_0}{P_0 + (M-P_0)\,\ee^{-rt}},
+  \label{eq:logistica-sol}
+\end{equation}
+y $P(t)\to M$ cuando $t\to\infty$ para todo $P_0>0$.
+\end{proposition}
+
+\begin{proof}
+Con $z=1/P$ se tiene $\dot z = -\dot P/P^2$, y \eqref{eq:logistica} se convierte en la ecuación lineal
+\[
+  \dot z + r z = \frac{r}{M}.
+\]
+Su solución es $z(t)=\tfrac1M + C\,\ee^{-rt}$, y $z(0)=1/P_0$ da $C=\tfrac{M-P_0}{MP_0}$. Entonces $P=1/z$ coincide con \eqref{eq:logistica-sol}.
+\end{proof}
+
+\begin{algoritmo}[ecuaciones de Bernoulli $y'+a(x)y=b(x)y^n$]
+\begin{pasos}
+  \item Reducir a la forma $y'+a\,y=b\,y^n$ con $n\neq 0,1$.
+  \item Sustituir $z=y^{1-n}$, de modo que $z'=(1-n)y^{-n}y'$.
+  \item Resolver la ecuación lineal $z'+(1-n)a\,z=(1-n)b$.
+  \item Deshacer el cambio: $y=z^{1/(1-n)}$, y ajustar la condición inicial.
+\end{pasos}
+\end{algoritmo}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=10, ymin=0, ymax=170,
+      xlabel={$t$}, ylabel={$P$},
+      legend style={at={(0.97,0.55)}}]
+      \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
+      \node[font=\small, text=gris, anchor=north west] at (axis cs:0.2,98) {$M$};
+      \addplot[serie1, domain=0:10, samples=100] {1000/(10+90*exp(-0.8*x))};
+      \addlegendentry{$P_0<M$}
+      \addplot[serie2, domain=0:10, samples=100] {16000/(160-60*exp(-0.8*x))};
+      \addlegendentry{$P_0>M$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Soluciones logísticas con $M=100$, $r=0{,}8$. Si $P_0<M$ la curva es sigmoidea; si $P_0>M$ decrece monótonamente hacia $M$.}
+  \label{fig:logistica}
+\end{figure}
+
+\subsection{La ley de Gompertz}
+
+\begin{definicion}[Ley de Gompertz]{Ley de Gompertz}
+La tasa per cápita es proporcional al logaritmo del cociente entre la capacidad de carga y la población:
+\begin{equation}
+  \dv{P}{t} = bP\,\ln\frac{M}{P}, \qquad P(0)=P_0>0,
+  \label{eq:gompertz}
+\end{equation}
+con $b>0$ y $M>0$ la capacidad de carga.
+\end{definicion}
+
+Con $z=\ln P$ se obtiene $\dot z = b(\ln M - z)$, que es lineal. Su solución es $z=\ln M + \ln(P_0/M)\,\ee^{-bt}$, y por tanto
+\begin{equation}
+  P(t) = M\exp\!\Bigl[\ln\frac{P_0}{M}\,\ee^{-bt}\Bigr].
+  \label{eq:gompertz-sol}
+\end{equation}
+
+\begin{lemma}[punto de inflexión]\label{lem:gompertz}
+Si $P_0<M/\ee$, la solución \eqref{eq:gompertz-sol} tiene un único punto de inflexión, en $P=M/\ee$.
+\end{lemma}
+
+\begin{proof}
+Derivando \eqref{eq:gompertz},
+\[
+  \ddot P = b\dot P\ln\frac{M}{P} - b\dot P = b\,\dot P\Bigl(\ln\frac{M}{P}-1\Bigr).
+\]
+Como $\dot P>0$ para $0<P<M$, $\ddot P=0$ si y solo si $\ln(M/P)=1$, es decir, $P=M/\ee$.
+\end{proof}
+
+\begin{remark}
+En la logística la inflexión ocurre en $P=M/2$; en Gompertz, en $P=M/\ee\approx 0{,}37\,M$, de modo que el crecimiento es asimétrico respecto a la sigmoide logística. Este modelo se usa, por ejemplo, en el crecimiento tumoral.
+\end{remark}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=10, ymin=0, ymax=110,
+      xlabel={$t$}, ylabel={$P$},
+      legend style={at={(0.97,0.45)}}]
+      \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
+      \addplot[serie1, domain=0:10, samples=100] {100*exp(ln(0.03)*exp(-0.5*x))};
+      \addlegendentry{$P_0/M=0{,}03$}
+      \addplot[serie2, domain=0:10, samples=100] {100*exp(ln(0.2)*exp(-0.5*x))};
+      \addlegendentry{$P_0/M=0{,}2$}
+      \addplot[serie3, domain=0:10, samples=100] {100*exp(ln(0.5)*exp(-0.5*x))};
+      \addlegendentry{$P_0/M=0{,}5$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Soluciones de Gompertz con $M=100$, $b=0{,}5$.}
+  \label{fig:gompertz}
+\end{figure}
+
+\subsection{Curvas de infección SIS}
+
+En el modelo SIS, una población de tamaño fijo $N$ se divide en susceptibles $S(t)$ e infectados $I(t)$, y los infectados que se recuperan vuelven a ser susceptibles.
+
+\begin{modelo}[SIS]
+\begin{equation}
+  \dot S = -\beta SI + \gamma I, \qquad \dot I = \beta SI - \gamma I,
+  \label{eq:sis}
+\end{equation}
+con $\beta>0$ la tasa de contagio y $\gamma>0$ la tasa de recuperación. Se cumple $\dot S+\dot I=0$, luego $S+I=N$.
+\end{modelo}
+
+Sustituyendo $S=N-I$ se obtiene una única ecuación de Bernoulli con $n=2$:
+\begin{equation}
+  \dot I = (\beta N-\gamma)\,I - \beta I^2, \qquad I(0)=I_0\in(0,N].
+  \label{eq:sis-I}
+\end{equation}
+Se define el número reproductivo básico $R_0=\beta N/\gamma$ y $k = N-\gamma/\beta$, de modo que $\beta N-\gamma=\beta k$.
+
+\begin{theorem}[curva de infección SIS]\label{thm:sis}
+Para $k\neq 0$, la solución de \eqref{eq:sis-I} es
+\begin{equation}
+  I(t)=\frac{k}{1+\Bigl(\dfrac{k}{I_0}-1\Bigr)\ee^{-\beta k t}}.
+  \label{eq:sis-sol}
+\end{equation}
+Si $R_0>1$ (es decir, $k>0$), $I(t)\to k$; si $R_0<1$ ($k<0$), $I(t)\to 0$. Si $R_0=1$, $I(t)=I_0/(1+\beta I_0 t)\to 0$.
+\end{theorem}
+
+\begin{proof}
+Con $z=1/I$, la ecuación \eqref{eq:sis-I} se reduce a $\dot z+\beta k\,z=\beta$. La solución es $z=\tfrac1k+C\,\ee^{-\beta kt}$, y $z(0)=1/I_0$ da $C=\tfrac1{I_0}-\tfrac1k$. Invirtiendo, $I=1/z$ coincide con \eqref{eq:sis-sol}. El comportamiento asintótico se sigue del signo de $k$ en el exponente. Para $k=0$, $\dot z=\beta$ y $z=1/I_0+\beta t$.
+\end{proof}
+
+\begin{remark}
+El umbral $R_0=1$ separa dos regímenes: la enfermedad persiste con $I_\infty=N(1-1/R_0)$ si $R_0>1$ y se extingue si $R_0\le1$.
+\end{remark}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=30, ymin=0, ymax=1,
+      xlabel={$t$}, ylabel={$I/N$},
+      legend style={at={(0.97,0.5)}}]
+      % N=1, gamma=0.2: R0=3 (beta=0.6, k=2/3), R0=1.5 (beta=0.3, k=1/3), R0=0.8 (beta=0.16, k=-0.25)
+      \addplot[serie1, domain=0:30, samples=100] {(2/3)/(1+((2/3)/0.05-1)*exp(-0.6*(2/3)*x))};
+      \addlegendentry{$R_0=3$}
+      \addplot[serie2, domain=0:30, samples=100] {(1/3)/(1+((1/3)/0.05-1)*exp(-0.3*(1/3)*x))};
+      \addlegendentry{$R_0=1{,}5$}
+      \addplot[serie3, domain=0:30, samples=100] {(-0.25)/(1+((-0.25)/0.3-1)*exp(0.16*0.25*x))};
+      \addlegendentry{$R_0=0{,}8$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Curvas SIS con $\gamma=0{,}2$, $N=1$. Con $R_0>1$ la fracción de infectados tiende a $1-1/R_0$; con $R_0<1$ se extingue.}
+  \label{fig:sis}
+\end{figure}

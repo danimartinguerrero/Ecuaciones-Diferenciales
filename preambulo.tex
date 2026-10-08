@@ -1,0 +1,200 @@
+% ==========================================================
+%  PREÁMBULO — Ecuaciones Diferenciales, Tema 2
+%  Motor: pdfLaTeX · Fuente: Palatino (newpx), como el artículo de referencia
+% ==========================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-nodecimaldot]{babel}
+\usepackage[p,osf]{newpxtext}
+\usepackage{amsmath, amsthm, mathtools}
+\usepackage[bigdelims,vvarbb]{newpxmath}
+\usepackage[final,protrusion=true,expansion=true]{microtype}
+\usepackage{bm}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage[a4paper,left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+
+\sisetup{locale=FR, per-mode=symbol, inter-unit-product=\ensuremath{{}\cdot{}}}
+\sisetup{output-decimal-marker={,}}
+
+% --- Paleta sobria (azules y grises) ---
+\definecolor{azulOscuro}{HTML}{1F3A5F}
+\definecolor{azulMedio}{HTML}{3B6EA5}
+\definecolor{azulClaro}{HTML}{8FB3D9}
+\definecolor{azulFondo}{HTML}{F3F7FB}
+\definecolor{gris}{HTML}{6B7280}
+\definecolor{grisClaro}{HTML}{D4D8DE}
+\definecolor{acento}{HTML}{B5651D}
+
+% --- Enlaces e índice ---
+\usepackage[colorlinks=true,linkcolor=azulOscuro,citecolor=azulOscuro,urlcolor=azulMedio]{hyperref}
+\usepackage[nameinlink,noabbrev,spanish]{cleveref}
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\hfill\large\scshape\color{azulOscuro}}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftsecleader}{\hfill}
+\renewcommand{\cftsubsecleader}{\hfill}
+\renewcommand{\cftsecfont}{\color{azulMedio}}
+\renewcommand{\cftsubsecfont}{\color{azulMedio}}
+\renewcommand{\cftsecpagefont}{\color{azulMedio}}
+\renewcommand{\cftsubsecpagefont}{\color{azulMedio}}
+\setcounter{tocdepth}{2}
+
+% --- Tipografía y página ---
+\linespread{1.08}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+\setlist{itemsep=2pt, topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{14pt}
+\fancyhead[C]{\footnotesize\scshape\color{gris} Ecuaciones diferenciales · Tema 2}
+\fancyhead[R]{\footnotesize\color{gris}\thepage}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\footnotesize\color{gris}\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% Estilo AMS: sección centrada en versalitas; subsección en negrita
+\titleformat{\section}[block]{\centering\scshape\color{azulOscuro}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}[block]{\bfseries\color{azulOscuro}}{\thesubsection.}{0.5em}{}
+\titleformat{name=\subsection,numberless}[block]{\itshape\color{azulOscuro}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{3ex plus 1ex}{1.6ex}
+\titlespacing*{\subsection}{0pt}{2.2ex plus .8ex}{1ex}
+
+% --- Notación ---
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\dv}[2]{\dfrac{\dd #1}{\dd #2}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\eqnum}[1]{\tag{#1}}
+\mathtoolsset{showonlyrefs=false}
+\numberwithin{equation}{section}
+
+% --- Gráficas ---
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\pgfplotsset{
+  informe/.style={
+    width=0.9\linewidth, height=6.4cm,
+    axis lines=left, axis line style={gris},
+    tick style={gris}, tick label style={font=\footnotesize},
+    label style={font=\small},
+    grid=major, grid style={grisClaro, very thin},
+    enlargelimits=false, clip=true,
+    legend style={font=\footnotesize, draw=none, fill=none, at={(0.97,0.5)}, anchor=east, legend cell align=left},
+  },
+  serie1/.style={color=azulOscuro, line width=1.1pt},
+  serie2/.style={color=azulMedio, line width=1.1pt, dashed},
+  serie3/.style={color=gris, line width=1.1pt, dotted},
+  serie4/.style={color=acento, line width=1.1pt, dash dot},
+  asintota/.style={color=gris, line width=0.6pt, dashed},
+}
+\captionsetup{font=small, labelfont={bf,color=azulOscuro}, labelsep=period}
+
+% ==========================================================
+%  ENTORNOS
+% ==========================================================
+\usepackage{thmtools}
+\usepackage[most]{tcolorbox}
+
+\newcommand{\etiquetaEntorno}[1]{\textsc{#1}}
+
+% Teoremas, proposiciones, lemas, corolarios: cuerpo en cursiva, encabezado azul
+\declaretheoremstyle[
+  headfont=\bfseries\color{azulOscuro}, notefont=\bfseries\color{azulOscuro}, notebraces={(}{)},
+  bodyfont=\itshape, postheadspace=0.6em, headpunct={.},
+  spaceabove=10pt, spacebelow=10pt]{enunciado}
+% Ejemplos y observaciones: cuerpo recto, encabezado en cursiva azul
+\declaretheoremstyle[
+  headfont=\itshape\bfseries\color{azulMedio}, notefont=\itshape\color{azulMedio}, notebraces={(}{)},
+  bodyfont=\normalfont, postheadspace=0.6em, headpunct={.},
+  spaceabove=8pt, spacebelow=8pt]{nota}
+
+\declaretheorem[style=enunciado, name=Teorema, numberwithin=section]{theorem}
+\declaretheorem[style=enunciado, name=Proposición, sibling=theorem]{proposition}
+\declaretheorem[style=enunciado, name=Lema, sibling=theorem]{lemma}
+\declaretheorem[style=enunciado, name=Corolario, sibling=theorem]{corollary}
+\declaretheorem[style=nota, name=Ejemplo, numberwithin=section]{example}
+\declaretheorem[style=nota, name=Observación, sibling=example]{remark}
+
+\renewcommand{\qedsymbol}{\textcolor{azulMedio}{$\blacksquare$}}
+\renewcommand{\proofname}{\itshape Demostración}
+\newcommand{\finejemplo}{\hfill\textcolor{azulMedio}{$\diamond$}}
+
+% Definiciones: único entorno enmarcado (fino, fondo tenue)
+\newtcbtheorem[number within=section]{definition}{Definición}{
+  enhanced, breakable, sharp corners,
+  colback=azulFondo, colframe=azulClaro, boxrule=0.4pt,
+  left=9pt, right=9pt, top=5pt, bottom=5pt,
+  before skip=10pt, after skip=10pt,
+  fonttitle=\bfseries\color{azulOscuro}, coltitle=azulOscuro,
+  attach boxed title to top left={yshift*=-\tcboxedtitleheight/2, xshift=8pt},
+  boxed title style={colback=white, colframe=white, sharp corners, boxrule=0pt, left=3pt, right=3pt, top=1pt, bottom=1pt},
+  title={}}{def}
+\newenvironment{definicion}[2][]{\begin{definition}{#2}{#1}}{\end{definition}}
+
+% Modelo: filete superior e inferior
+\newtcolorbox{modelo}[1][]{
+  enhanced, breakable, blanker,
+  borderline north={0.6pt}{0pt}{azulOscuro},
+  borderline south={0.6pt}{0pt}{azulOscuro},
+  top=6pt, bottom=6pt, left=2pt, right=2pt,
+  before skip=10pt, after skip=10pt,
+  before upper={\noindent{\scshape\bfseries\color{azulOscuro} Modelo\if\relax\detokenize{#1}\relax\else\ --- #1\fi.}\ }}
+
+% Desarrollo teórico: línea lateral fina gris
+\newtcolorbox{desarrollo}[1][]{
+  enhanced, breakable, blanker,
+  borderline west={0.5pt}{0pt}{grisClaro},
+  left=12pt, top=2pt, bottom=2pt,
+  before skip=8pt, after skip=8pt,
+  before upper={\noindent{\scshape\color{gris} Desarrollo\if\relax\detokenize{#1}\relax\else\ --- #1\fi.}\ }}
+
+% Algoritmo de resolución: pasos numerados
+\newcounter{algoritmo}[section]
+\renewcommand{\thealgoritmo}{\thesection.\arabic{algoritmo}}
+\newtcolorbox{algoritmo}[1][]{
+  enhanced, breakable, blanker,
+  borderline north={0.6pt}{0pt}{azulOscuro},
+  borderline south={0.3pt}{0pt}{azulClaro},
+  top=6pt, bottom=6pt, left=2pt, right=2pt,
+  before skip=10pt, after skip=10pt,
+  before upper={\refstepcounter{algoritmo}\noindent{\scshape\bfseries\color{azulOscuro} Algoritmo \thealgoritmo\if\relax\detokenize{#1}\relax\else\ (#1)\fi.}\par\vspace{2pt}},
+  }
+\newlist{pasos}{enumerate}{1}
+\setlist[pasos]{label=\textbf{\textcolor{azulMedio}{Paso \arabic*.}}, leftmargin=3.6em, labelsep=0.5em, itemsep=2pt}
+
+% Ejercicios
+\newcounter{ejercicio}[section]
+\renewcommand{\theejercicio}{\thesection.\arabic{ejercicio}}
+\newtcolorbox{ejercicio}[1][]{
+  enhanced, breakable, blanker,
+  borderline west={1.2pt}{0pt}{azulMedio},
+  left=12pt, top=3pt, bottom=3pt,
+  before skip=10pt, after skip=10pt,
+  before upper={\refstepcounter{ejercicio}\noindent{\bfseries\color{azulOscuro} Ejercicio \theejercicio\if\relax\detokenize{#1}\relax\else\ (#1)\fi.}\ }}
+
+% Tabla de parámetros
+\newcommand{\encabezadoTabla}[1]{\textbf{\textcolor{azulOscuro}{#1}}}
+
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\crefname{theorem}{teorema}{teoremas}
+\crefname{proposition}{proposición}{proposiciones}
+\crefname{lemma}{lema}{lemas}
+\crefname{algoritmo}{algoritmo}{algoritmos}
+
+% Resumen estilo AMS
+\newenvironment{resumen}{\small\begin{quote}\noindent\textsc{Resumen.}\ }{\end{quote}}
