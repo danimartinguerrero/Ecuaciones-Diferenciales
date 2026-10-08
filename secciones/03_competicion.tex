@@ -1,0 +1,253 @@
+\Needspace{12\baselineskip}
+\section{Competición de especies}\label{sec:competicion}
+
+\subsection{Modelos de Lotka--Volterra (equilibrio ecológico)}
+
+Consideremos dos especies que interactúan como presa y depredador: los conejos (presa), cuya población es $x(t)$, y los zorros (depredador), con población $y(t)$. Los conejos se reproducen mucho más rápido que los zorros.
+
+\begin{modelo}[Lotka--Volterra]
+\begin{equation}
+  \dot x = \alpha x - \beta xy, \qquad \dot y = -\gamma y + \delta xy,
+  \label{eq:lv}
+\end{equation}
+con $\alpha,\beta,\gamma,\delta>0$. Los términos $\alpha x$ y $-\gamma y$ son las tasas de reproducción (crecimiento de las presas sin depredadores y decaimiento de los depredadores sin presas), y los términos $\mp xy$ describen la interacción: es mala para los conejos que haya zorros, y buena para los zorros que haya conejos.
+\end{modelo}
+
+Dividiendo las dos ecuaciones se elimina el tiempo y se obtiene la ecuación de las órbitas:
+\begin{equation}
+  \dv{y}{x} = \frac{y\,(\delta x-\gamma)}{x\,(\alpha-\beta y)},
+  \label{eq:lv-orbitas}
+\end{equation}
+que es de variables separables. Separando,
+\[
+  \frac{\alpha-\beta y}{y}\,\dd y = \frac{\delta x-\gamma}{x}\,\dd x
+  \;\Longleftrightarrow\;
+  \Bigl(\frac{\alpha}{y}-\beta\Bigr)\dd y + \Bigl(\frac{\gamma}{x}-\delta\Bigr)\dd x = 0 .
+\]
+La forma de Pfaff resultante es exacta, y se integra directamente:
+\begin{equation}
+  \alpha\ln y-\beta y + \gamma\ln x-\delta x = \text{cte}
+  \qquad\Longleftrightarrow\qquad
+  H(x,y)\equiv\delta x-\gamma\ln x+\beta y-\alpha\ln y = c .
+  \label{eq:lv-integral}
+\end{equation}
+La constante se determina con las condiciones iniciales de población: $c=H(x_0,y_0)$.
+
+\begin{theorem}[órbitas cerradas]\label{thm:lv}
+El sistema \eqref{eq:lv} tiene dos equilibrios: $(0,0)$, que es un punto de silla, y $(x^\ast,y^\ast)=(\gamma/\delta,\,\alpha/\beta)$. La función $H$ es una integral primera, y sus conjuntos de nivel $\{H=c\}$ en el primer cuadrante, con $c>H(x^\ast,y^\ast)$, son curvas cerradas que rodean a $(x^\ast,y^\ast)$. Por tanto, toda solución con $x_0,y_0>0$ distinta del equilibrio es periódica.
+\end{theorem}
+
+\begin{proof}
+A lo largo de las soluciones,
+\[
+  \dot H=\Bigl(\delta-\frac{\gamma}{x}\Bigr)\dot x+\Bigl(\beta-\frac{\alpha}{y}\Bigr)\dot y
+  =(\delta x-\gamma)(\alpha-\beta y)+(\beta y-\alpha)(\delta x-\gamma)=0 .
+\]
+Además, $\nabla H=0$ solo en $(x^\ast,y^\ast)$, donde la matriz hessiana $\operatorname{diag}(\gamma/x^2,\ \alpha/y^2)$ es definida positiva, y $H\to+\infty$ cuando $(x,y)$ se aproxima a la frontera del primer cuadrante o a infinito. Luego $(x^\ast,y^\ast)$ es el único mínimo de $H$ y los conjuntos de nivel son compactos y simples, es decir, curvas cerradas. Como no contienen equilibrios, la solución las recorre periódicamente.
+\end{proof}
+
+\begin{desarrollo}[las cuatro fases del ciclo]
+Las rectas $x=x^\ast$ e $y=y^\ast$ dividen el plano en cuatro regiones, según el signo de $\dot x=x(\alpha-\beta y)$ y de $\dot y=y(\delta x-\gamma)$. Una órbita se recorre en sentido antihorario:
+\begin{itemize}
+  \item[\textbf{(I)}] $x>x^\ast$, $y<y^\ast$: $\dot x>0$, $\dot y>0$. Aumentan conejos y zorros.
+  \item[\textbf{(II)}] $x>x^\ast$, $y>y^\ast$: $\dot x<0$, $\dot y>0$. Los zorros se comen a los conejos, que disminuyen.
+  \item[\textbf{(III)}] $x<x^\ast$, $y>y^\ast$: $\dot x<0$, $\dot y<0$. Hay pocos conejos y los zorros pasan hambre.
+  \item[\textbf{(IV)}] $x<x^\ast$, $y<y^\ast$: $\dot x>0$, $\dot y<0$. Como hay menos zorros, los conejos pueden reproducirse mejor.
+\end{itemize}
+Estos son los llamados \emph{ciclos ecológicos}: ninguna de las especies desaparece.
+\end{desarrollo}
+
+\begin{remark}[principio de Volterra]
+Si $T$ es el periodo, integrando $\dot y/y=-\gamma+\delta x$ sobre un ciclo se obtiene $0=-\gamma T+\delta\int_0^T x\,\dd t$. Las poblaciones medias son, por tanto, $\langle x\rangle=\gamma/\delta$ y $\langle y\rangle=\alpha/\beta$, es decir, las del equilibrio.
+\end{remark}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.52\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=6.4cm, xmin=0, xmax=3.3, ymin=0, ymax=3.3,
+        xlabel={$x$ (presas)}, ylabel={$y$ (depredadores)}]
+        \addplot[quiver={u=\thisrow{u},v=\thisrow{v},scale arrows=0.2},
+                 -{Stealth[length=2.4pt]}, color=azulClaro, forget plot]
+          table[x=x,y=y]{figuras/datos/lv_campo.dat};
+        \addplot[serie3, forget plot] table[x=x,y=y]{figuras/datos/lv_orbita_c.dat};
+        \addplot[serie2, forget plot] table[x=x,y=y]{figuras/datos/lv_orbita_b.dat};
+        \addplot[serie1, forget plot] table[x=x,y=y]{figuras/datos/lv_orbita_a.dat};
+        \addplot[asintota, forget plot, domain=0:3.3, samples=2] {1};
+        \addplot[asintota, forget plot] coordinates {(1,0) (1,3.3)};
+        \addplot[only marks, mark=*, mark size=1.8pt, color=azulOscuro, forget plot] coordinates {(1,1)};
+        \node[font=\scriptsize, anchor=north west, text=azulOscuro, fill=white, inner sep=1pt] at (axis cs:1.03,0.97) {$(x^\ast,y^\ast)$};
+        \node[font=\footnotesize, text=gris] at (axis cs:2.15,0.62) {I};
+        \node[font=\footnotesize, text=gris] at (axis cs:2.15,1.75) {II};
+        \node[font=\footnotesize, text=gris] at (axis cs:0.5,1.75) {III};
+        \node[font=\footnotesize, text=gris] at (axis cs:0.5,0.62) {IV};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Órbitas $H=c$ ($c=2{,}3;\ 2{,}8;\ 3{,}4$) y campo de direcciones.}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.44\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=6.4cm, xmin=0, xmax=14, ymin=0, ymax=3,
+        xlabel={$t$}, ylabel={Población}, legend columns=1, legend style={at={(0.5,1.04)}, anchor=south}]
+        \addplot[serie1] table[x=t,y=x]{figuras/datos/lv_tiempo.dat};
+        \addlegendentry{$x$ (presas)}
+        \addplot[serie4] table[x=t,y=y]{figuras/datos/lv_tiempo.dat};
+        \addlegendentry{$y$ (depredadores)}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Evolución temporal ($c=2{,}8$): oscilaciones desfasadas.}
+  \end{subfigure}
+  \caption{Modelo de Lotka--Volterra con $\alpha=\beta=\gamma=\delta=1$. Las órbitas, recorridas en sentido antihorario, son curvas cerradas (ciclos ecológicos) alrededor del equilibrio $(1,1)$.}
+  \label{fig:lv}
+\end{figure}
+
+\subsection{Curvas de persecución}\label{sec:competicion-pers}
+
+Un conejo se mueve en línea recta y un zorro intenta alcanzarlo, dirigiéndose en cada instante hacia él.
+
+\begin{modelo}[persecución]
+Se toma el eje $y$ como la recta a lo largo de la cual se mueve el conejo con velocidad constante $\hat v$, partiendo del origen. Su posición es $\hat{\bm r}=(\hat x,\hat y)$ con
+\begin{equation}
+  \hat x=0,\qquad \hat y=\hat v t .
+  \label{eq:conejo}
+\end{equation}
+El zorro parte de $(a,0)$ y corre con velocidad $v$, constante en módulo pero no en dirección. Su posición es $\bm r=(x,y)$, con
+\begin{equation}
+  x(0)=a,\quad y(0)=0,\quad \dot{\bm r}(0)=-v\,\bm\imath .
+  \label{eq:zorro-ci}
+\end{equation}
+En todo instante, la velocidad del zorro apunta hacia el conejo.
+\end{modelo}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, width=0.62\linewidth, height=6.2cm, xmin=-0.08, xmax=1.12, ymin=-0.05, ymax=0.8,
+      xlabel={$x$}, ylabel={$y$}, xtick={0,0.5,1}, xticklabels={$0$,$x$,$a$}, ytick=\empty,
+      axis lines=left, grid=none]
+      \addplot[serie1, domain=0.0001:1, samples=120] {0.5*(x^1.5/1.5 - x^0.5/0.5) + 0.5/0.75};
+      \addplot[serie3, forget plot, dashed] coordinates {(0.5,0.0774) (0,0.2542)};
+      \addplot[asintota, forget plot] coordinates {(0,0) (0,0.78)};
+      \addplot[only marks, mark=*, mark size=1.8pt, color=azulOscuro, forget plot] coordinates {(0.5,0.0774) (1,0)};
+      \addplot[only marks, mark=square*, mark size=1.8pt, color=acento, forget plot] coordinates {(0,0.2542)};
+      \draw[-{Stealth}, color=acento, thick] (axis cs:0,0.2542) -- (axis cs:0,0.42);
+      \node[font=\footnotesize, anchor=west, text=acento] at (axis cs:0.02,0.36) {$\hat v$};
+      \node[font=\footnotesize, anchor=east, text=acento] at (axis cs:-0.01,0.2542) {$\hat y=\hat v t$};
+      \node[font=\footnotesize, anchor=north east, text=azulOscuro] at (axis cs:0.5,0.065) {$(x,y)$};
+      \node[font=\footnotesize, anchor=south, text=azulOscuro] at (axis cs:1,0.02) {zorro};
+      \node[font=\footnotesize, anchor=west, text=gris] at (axis cs:0.55,0.24) {línea de visión};
+      \draw[-{Stealth}, color=azulOscuro, thick] (axis cs:0.5,0.0774) -- (axis cs:0.40,0.1130);
+      \node[font=\footnotesize, anchor=south, text=azulOscuro] at (axis cs:0.36,0.135) {$\bm v$};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Geometría de la persecución ($k=1/2$). La velocidad del zorro es tangente a su trayectoria y apunta al conejo, de modo que $y'=-(\hat y-y)/x$.}
+  \label{fig:persecucion-geo}
+\end{figure}
+
+\begin{desarrollo}[ecuación de la trayectoria del zorro]
+Sea $y'=\dd y/\dd x$.
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=1.6em]
+  \item \emph{Módulo de la velocidad.} $v^2=\dot x^2+\dot y^2=\dot x^2\,(1+y'^2)$. Como $x$ decrece con $t$, $\dot x<0$ y
+  \begin{equation}
+    v\,\dd t=-\sqrt{1+y'^2}\,\dd x .
+    \label{eq:pers-modulo}
+  \end{equation}
+  \item \emph{Dirección.} El zorro corre hacia el conejo: $y'=-\dfrac{\hat y-y}{x}=-\dfrac{\hat vt-y}{x}$, es decir,
+  \begin{equation}
+    \hat v\,t=y-x\,y' .
+    \label{eq:pers-direccion}
+  \end{equation}
+  \item \emph{Eliminación del tiempo.} Diferenciando \eqref{eq:pers-direccion} respecto a $x$: $\hat v\,\dd t=\bigl(y'-y'-xy''\bigr)\dd x=-x\,y''\,\dd x$. Con \eqref{eq:pers-modulo}, y llamando $k=\hat v/v$,
+  \begin{equation}
+    x\,y''=k\sqrt{1+y'^2},\qquad k=\frac{\hat v}{v}.
+    \label{eq:pers-ode}
+  \end{equation}
+  \item \emph{Reducción de orden.} Como $y$ no aparece explícitamente, se toma $z=y'$ y queda la ecuación de primer orden separable
+  \[
+    x\,z'=k\sqrt{1+z^2}\;\Longrightarrow\;\frac{\dd z}{\sqrt{1+z^2}}=k\,\frac{\dd x}{x}.
+  \]
+\end{enumerate}
+\end{desarrollo}
+
+\begin{lemma}[una primitiva elemental]\label{lem:arsinh}
+$\displaystyle\int\frac{\dd z}{\sqrt{1+z^2}}=\ln\bigl(z+\sqrt{1+z^2}\,\bigr)+C$.
+\end{lemma}
+
+\begin{proof}
+Se hace la sustitución trigonométrica $z=\tan\theta$, de modo que $\dd z=\sec^2\theta\,\dd\theta$ y $\sqrt{1+z^2}=\sqrt{1+\tan^2\theta}=\sec\theta$. Entonces
+\[
+  \int\frac{\sec^2\theta}{\sec\theta}\,\dd\theta=\int\sec\theta\,\dd\theta=\ln\lvert\sec\theta+\tan\theta\rvert+C
+  =\ln\bigl(\sqrt{1+z^2}+z\bigr)+C .
+\]
+(Para integrandos con $\sqrt{a^2-x^2}$, $\sqrt{a^2+x^2}$ o $\sqrt{x^2-a^2}$ se toman, respectivamente, $x=a\sin\theta$, $x=a\tan\theta$ o $x=a\sec\theta$.)
+\end{proof}
+
+Integrando, $\ln\bigl(y'+\sqrt{1+y'^2}\bigr)-k\ln x=C$. En $x=a$ se tiene $y'=0$, luego $C=-k\ln a$ y
+\begin{equation}
+  y'+\sqrt{1+y'^2}=\Bigl(\frac{x}{a}\Bigr)^{k}.
+  \label{eq:pers-primera}
+\end{equation}
+Despejamos $y'$. Aislando la raíz, $\sqrt{1+y'^2}=(x/a)^k-y'$, y elevando al cuadrado, $1=(x/a)^{2k}-2y'(x/a)^k$. De donde
+\begin{equation}
+  y'=\frac{(x/a)^{2k}-1}{2(x/a)^k}=\frac12\Bigl[\Bigl(\frac{x}{a}\Bigr)^{k}-\Bigl(\frac{x}{a}\Bigr)^{-k}\Bigr].
+  \label{eq:pers-yp}
+\end{equation}
+(Equivalentemente: $\sqrt{1+y'^2}-y'=(x/a)^{-k}$, y se resta o suma a \eqref{eq:pers-primera}.)
+
+\begin{theorem}[trayectoria del zorro]\label{thm:persecucion}
+Si $k=\hat v/v<1$, la trayectoria del zorro es
+\begin{equation}
+  y(x)=\frac a2\left[\frac{1}{1+k}\Bigl(\frac{x}{a}\Bigr)^{1+k}-\frac{1}{1-k}\Bigl(\frac{x}{a}\Bigr)^{1-k}\right]+\frac{ak}{1-k^2},
+  \label{eq:pers-sol}
+\end{equation}
+y el zorro alcanza al conejo en $x=0$, en el instante $\Tf=\dfrac{av}{v^2-\hat v^2}$, en la posición $\hat y_f=y_f=\dfrac{a v\hat v}{v^2-\hat v^2}$.
+\end{theorem}
+
+\begin{proof}
+Se integra \eqref{eq:pers-yp} con $u=x/a$, $\dd x=a\,\dd u$:
+\[
+  y=\frac a2\Bigl(\int u^{k}\,\dd u-\int u^{-k}\,\dd u\Bigr)
+   =\frac a2\Bigl[\frac{u^{1+k}}{1+k}-\frac{u^{1-k}}{1-k}\Bigr]+C_1 ,
+\]
+válido para $k\neq1$. La condición $y(a)=0$ ($u=1$) da $C_1=\dfrac a2\Bigl[\dfrac{1}{1-k}-\dfrac{1}{1+k}\Bigr]=\dfrac{ak}{1-k^2}$, lo que prueba \eqref{eq:pers-sol}.
+
+Si $k<1$ el exponente $1-k$ es positivo, de modo que al llegar a $x=0$ los dos primeros términos se anulan y $y(0)=\dfrac{ak}{1-k^2}$. El zorro y el conejo coinciden cuando $x=\hat x=0$ y $y=\hat y$: $\dfrac{ak}{1-k^2}=\hat v\Tf$. Con $k=\hat v/v$,
+\[
+  \Tf=\frac{ak}{\hat v\,(1-k^2)}=\frac{a}{v}\cdot\frac{1}{1-\hat v^2/v^2}=\frac{av}{v^2-\hat v^2},
+  \qquad
+  \hat y_f=\hat v\Tf=\frac{av\hat v}{v^2-\hat v^2}.
+\]
+\end{proof}
+
+\begin{remark}
+Si $k>1$ ($\hat v>v$) el término $-(x/a)^{1-k}/(1-k)$ diverge al hacer $x\to0$, y el zorro nunca alcanza al conejo. El caso límite $k=1$ (misma velocidad) se trata en el problema~6 de la \cref{sec:seminarios}: el zorro tampoco lo alcanza y la distancia mínima es $a/2$.
+\end{remark}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, width=0.8\linewidth, height=6.2cm, xmin=0, xmax=1.05, ymin=0, ymax=0.75,
+      xlabel={$x/a$}, ylabel={$y/a$}, legend style={at={(0.97,0.92)}, anchor=north east},
+      declare function={ pers(\x,\k)=0.5*(\x^(1+\k)/(1+\k)-\x^(1-\k)/(1-\k))+\k/(1-\k*\k); }]
+      \addplot[serie1, domain=0.00001:1, samples=150] {pers(x,0.5)};
+      \addlegendentry{$v=2\hat v$}
+      \addplot[serie2, domain=0.00001:1, samples=150] {pers(x,1/3)};
+      \addlegendentry{$v=3\hat v$}
+      \addplot[serie4, domain=0.00001:1, samples=150] {pers(x,0.25)};
+      \addlegendentry{$v=4\hat v$}
+      \addplot[only marks, mark=*, mark size=1.6pt, color=azulOscuro, forget plot]
+        coordinates {(0,0.6667) (0,0.375) (0,0.2667)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Curvas de persecución del zorro para distintas velocidades relativas, con $a=1$. Los puntos sobre el eje son las posiciones de captura $y_f/a=k/(1-k^2)$.}
+  \label{fig:persecucion}
+\end{figure}
+
+\begin{example}
+Con $a=\SI{100}{\metre}$, $\hat v=\SI{5}{\metre\per\second}$ y $v=\SI{10}{\metre\per\second}$ se tiene $k=1/2$, y
+$\Tf=av/(v^2-\hat v^2)=\SI{13,3}{\second}$, con el conejo recorrido $\hat y_f=\hat v\Tf=\SI{66,7}{\metre}$.\finejemplo
+\end{example}
+
+\newpage

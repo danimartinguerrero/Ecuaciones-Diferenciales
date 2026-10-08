@@ -1,0 +1,469 @@
+\Needspace{12\baselineskip}
+\section{Seminarios prácticos}\label{sec:seminarios}
+
+Esta sección reúne los problemas del Tema~2 resueltos con detalle y, siempre que es posible, por varios métodos. La \cref{tab:metodos} resume las técnicas empleadas en el tema.
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{@{}p{4.1cm}p{5.6cm}p{3.4cm}@{}}
+    \toprule
+    \encabezadoTabla{Método} & \encabezadoTabla{Idea} & \encabezadoTabla{Dónde} \\
+    \midrule
+    Variables separables & $f(y)\,\dd y=g(x)\,\dd x$ & Malthus, Gompertz, \S\ref{sec:seminarios} \\
+    Ecuación lineal: factor integrante & $\ee^{\int a}$ hace exacta $y'+ay=b$ & Newton, circuitos \\
+    Variación de la constante (Lagrange) & $y=C(x)\,y_h$ & Newton, circuitos \\
+    Coeficientes indeterminados & ensayo $y_p$ de la forma del término forzante; si hay solapamiento con $y_h$, se multiplica por $t$ & Problemas 1 y 2 \\
+    Forma de Pfaff y factor integrante & $\mu$ tal que $\mu\omega$ sea exacta & Problema 2, ejemplo final \\
+    Riccati / Bernoulli & $P=1/z$ lo linealiza & logística, SIS \\
+    Regla de la cadena & $\dot v=v\,\dd v/\dd x$ & Problema 3 \\
+    Reducción de orden & $z=y'$ cuando $y$ no aparece & persecución \\
+    Límites indeterminados & L'Hôpital, desarrollo de Taylor & Problema 4 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Métodos de resolución utilizados en el Tema~2.}
+  \label{tab:metodos}
+\end{table}
+
+\subsection{Enunciados}
+
+\begin{problema}
+Resolver la ecuación de Newton del enfriamiento en el caso de que la temperatura ambiente evolucione en la forma $S(t)=S_0+b\sin(\omega t)$.
+\end{problema}
+\begin{problema}
+Resolver la ecuación de Newton del enfriamiento en el caso de que la temperatura ambiente evolucione en la forma $S(t)=S_0\,\ee^{-\omega t}$.
+\end{problema}
+\begin{problema}
+Determinar la distancia que recorre hasta pararse un móvil de velocidad inicial $v_0$ sometido a una fuerza dependiente de la velocidad $F=-k/v^2$.
+\end{problema}
+\begin{problema}
+Determinar la evolución temporal de la intensidad en un circuito con resistencia $R$ y autoinducción $L$ con fuerza electromotriz $U=U_0\,\ee^{-\omega t}$ cuando $\omega\to R/L$.
+\end{problema}
+\begin{problema}
+Los elementos radiactivos se desintegran a una tasa proporcional a la cantidad de elemento presente. Proponer un modelo matemático y resolverlo utilizando como parámetros la cantidad inicial de elemento y el periodo de vida media.
+\end{problema}
+\begin{problema}
+Demostrar que un zorro que persigue a un conejo yendo a la misma velocidad que él nunca lo alcanza. Si la distancia inicial entre ambos es $a$, demostrar que la mínima distancia entre ambos es $a/2$.
+\end{problema}
+
+\subsection{Soluciones}
+
+\subsubsection*{Problema 1: ambiente oscilante $S(t)=S_0+b\sin\omega t$}
+
+\begin{solucion}
+La ley de Newton $\dot T=-k\bigl(T-S(t)\bigr)$ se reordena como la ecuación lineal
+\begin{equation}
+  \dot T+kT=kS_0+kb\sin\omega t .
+  \label{eq:p1}
+\end{equation}
+
+\metodo{Método A: coeficientes indeterminados}
+\emph{Homogénea.} $\dot T_h+kT_h=0$ da $\dd T_h/T_h+k\,\dd t=0$, $\ln T_h+kt=c$, luego $T_h=C\,\ee^{-kt}$.
+
+\emph{Solución particular.} El término no homogéneo es una constante más una función periódica, así que se propone una solución de la misma naturaleza (sin confundir las constantes con $C$):
+\[
+  T_p=A+B\sin\omega t+D\cos\omega t,\qquad \dot T_p=B\omega\cos\omega t-D\omega\sin\omega t .
+\]
+Sustituyendo en \eqref{eq:p1} y agrupando por tipo de función:
+\[
+  \underbrace{kA}_{\text{cte.}}\;+\;(B\omega+kD)\cos\omega t\;+\;(-D\omega+kB)\sin\omega t
+  =kS_0+kb\sin\omega t .
+\]
+Igualando coeficientes:
+\[
+  A=S_0,\qquad B\omega+kD=0\;\Rightarrow\;D=-\frac\omega kB,\qquad -D\omega+kB=kb .
+\]
+Sustituyendo $D$ en la tercera: $B\bigl(\tfrac{\omega^2}{k}+k\bigr)=kb$, es decir, $B\,\tfrac{k^2+\omega^2}{k}=kb$, y por tanto
+\[
+  B=\frac{k^2b}{k^2+\omega^2},\qquad D=-\frac{k\omega b}{k^2+\omega^2}.
+\]
+Sumando la homogénea, la solución general es
+\begin{equation}
+  T(t)=C\,\ee^{-kt}+S_0+\frac{kb}{k^2+\omega^2}\bigl[k\sin\omega t-\omega\cos\omega t\bigr].
+  \label{eq:p1-general}
+\end{equation}
+Con $T(0)=T_0$: $T_0=C+S_0-\dfrac{k\omega b}{k^2+\omega^2}$, de donde $C=T_0-S_0+\dfrac{k\omega b}{k^2+\omega^2}$ y
+\begin{equation}
+  \boxed{\,T(t)=S_0+\Bigl(T_0-S_0+\frac{k\omega b}{k^2+\omega^2}\Bigr)\ee^{-kt}+\frac{kb}{k^2+\omega^2}\bigl[k\sin\omega t-\omega\cos\omega t\bigr].\,}
+  \label{eq:p1-sol}
+\end{equation}
+
+\metodo{Método B: factor integrante}
+Con la \cref{prop:newton-general}, $T=\ee^{-kt}\bigl[T_0+k\int_0^t\ee^{ks}(S_0+b\sin\omega s)\,\dd s\bigr]$. Usando
+\[
+  \int \ee^{ks}\sin\omega s\,\dd s=\frac{\ee^{ks}\,(k\sin\omega s-\omega\cos\omega s)}{k^2+\omega^2}
+\]
+(se obtiene integrando por partes dos veces), se llega de nuevo a \eqref{eq:p1-sol}.
+
+\metodo{Forma amplitud--fase}
+Como $k\sin\omega t-\omega\cos\omega t=\sqrt{k^2+\omega^2}\,\sin(\omega t-\varphi)$ con $\tan\varphi=\omega/k$, el régimen estacionario es
+\[
+  T_p(t)=S_0+\frac{b\,k}{\sqrt{k^2+\omega^2}}\,\sin(\omega t-\varphi):
+\]
+el objeto oscila con la frecuencia del ambiente, con amplitud atenuada por $k/\sqrt{k^2+\omega^2}<1$ y retardado en fase en $\varphi$. El transitorio $\ee^{-kt}$ decae con constante de tiempo $1/k$.
+
+\metodo{Enfriamiento rápido}
+Si $\omega/k\ll1$ (el cuerpo se equilibra mucho más rápido de lo que cambia el ambiente), $\varphi\to0$, la atenuación tiende a $1$ y el coeficiente $k\omega b/(k^2+\omega^2)\to0$. La solución se aproxima por
+\[
+  T\approx S_0+(T_0-S_0)\,\ee^{-kt}+b\sin\omega t ,
+\]
+es decir, el cuerpo sigue a la temperatura ambiente $S(t)$ tras un breve transitorio.
+\end{solucion}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=20, ymin=0, ymax=85,
+        xlabel={$t$}, ylabel={$T$}, legend columns=2, legend style={at={(0.5,1.04)}, anchor=south},
+        declare function={
+          p1T(\t,\k)=20+(80-20+\k*1*8/(\k*\k+1))*exp(-\k*\t)+\k*8/(\k*\k+1)*(\k*sin(deg(\t))-cos(deg(\t)));
+        }]
+        \addplot[serie3, domain=0:20, samples=300] {20+8*sin(deg(x))};
+        \addlegendentry{$S(t)$}
+        \addplot[serie1, domain=0:20, samples=300] {p1T(x,10)};
+        \addlegendentry{$T(t)$}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Enfriamiento rápido ($k=10\,\omega$).}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=20, ymin=0, ymax=85,
+        xlabel={$t$}, ylabel={$T$}, legend columns=2, legend style={at={(0.5,1.04)}, anchor=south},
+        declare function={
+          p1T(\t,\k)=20+(80-20+\k*1*8/(\k*\k+1))*exp(-\k*\t)+\k*8/(\k*\k+1)*(\k*sin(deg(\t))-cos(deg(\t)));
+        }]
+        \addplot[serie3, domain=0:20, samples=300] {20+8*sin(deg(x))};
+        \addlegendentry{$S(t)$}
+        \addplot[serie1, domain=0:20, samples=300] {p1T(x,0.5)};
+        \addlegendentry{$T(t)$}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Enfriamiento lento ($k=0{,}5\,\omega$): amplitud atenuada y retraso.}
+  \end{subfigure}
+  \caption{Problema~1. Evolución de $T$ con $S_0=20$, $b=8$, $\omega=1$ y $T_0=80$.}
+  \label{fig:p1}
+\end{figure}
+
+\subsubsection*{Problema 2: ambiente que decae $S(t)=S_0\,\ee^{-\omega t}$}
+
+\begin{solucion}
+La ecuación es $\dot T+kT=kS_0\,\ee^{-\omega t}$. La homogénea es la misma, $T_h=C\,\ee^{-kt}$. El método de coeficientes indeterminados obliga a distinguir dos situaciones, porque el término forzante puede solaparse con la solución de la homogénea cuando $k=\omega$.
+
+\metodo{Caso A: $k\neq\omega$ (sin solapamiento), coeficientes indeterminados}
+Se propone $T_p=A\,\ee^{-\omega t}$ (no hace falta incluir una constante: saldría $0$). Entonces $\dot T_p=-\omega A\,\ee^{-\omega t}$ y
+\[
+  -\omega A+kA=kS_0\;\Longrightarrow\;A=\frac{kS_0}{k-\omega},
+\]
+luego
+\[
+  T(t)=C\,\ee^{-kt}+\frac{kS_0}{k-\omega}\,\ee^{-\omega t}.
+\]
+Con $T(0)=T_0$: $C=T_0-\dfrac{kS_0}{k-\omega}$, y
+\begin{equation}
+  \boxed{\,T(t)=\frac{kS_0}{k-\omega}\,\ee^{-\omega t}+\Bigl(T_0-\frac{kS_0}{k-\omega}\Bigr)\ee^{-kt}.\,}
+  \label{eq:p2-A}
+\end{equation}
+
+\metodo{Caso B: $k=\omega$ (resonancia o solapamiento)}
+La ecuación es $\dot T+kT=kS_0\,\ee^{-kt}$, y $\ee^{-kt}$ ya forma parte de la solución homogénea. La regla del método dicta multiplicar el ensayo inicial por $t$: $T_p=At\,\ee^{-kt}$, con $\dot T_p=A\,\ee^{-kt}-Akt\,\ee^{-kt}$. Al sustituir se cancelan los términos en $t$ y queda $A\,\ee^{-kt}=kS_0\,\ee^{-kt}$, es decir, $A=kS_0$. La solución general es
+\[
+  T(t)=C\,\ee^{-kt}+kS_0\,t\,\ee^{-kt}=(C+kS_0t)\,\ee^{-kt},
+\]
+y con $T(0)=T_0$ resulta $C=T_0$:
+\begin{equation}
+  \boxed{\,T(t)=(T_0+kS_0t)\,\ee^{-kt}.\,}
+  \label{eq:p2-B}
+\end{equation}
+
+\metodo{Variación de la constante (Lagrange) en el caso $k=\omega$}
+Se parte de $T_h=C\,\ee^{-kt}$ y se hace $C=\hat C(t)$: $T_p=\hat C(t)\,\ee^{-kt}$, $\dot T_p=\dot{\hat C}\,\ee^{-kt}-k\hat C\,\ee^{-kt}$. Al sustituir en la ecuación completa, $\bigl[\dot{\hat C}\,\ee^{-kt}-k\hat C\,\ee^{-kt}\bigr]+k\hat C\,\ee^{-kt}=kS_0\,\ee^{-kt}$. La cancelación de los términos en $\hat C$ es la garantía estructural de que el método va por buen camino. Queda $\dot{\hat C}=kS_0$, $\hat C=kS_0t$ y se recupera $T=(c+kS_0t)\,\ee^{-kt}$.
+
+\metodo{Forma de Pfaff con factor integrante (caso $k\neq\omega$)}
+La ecuación $\dot T=-k(T-S_0\,\ee^{-\omega t})$ se escribe como la 1-forma
+\[
+  \alpha=B\,\dd T+A\,\dd t=1\cdot\dd T+\bigl(kT-kS_0\,\ee^{-\omega t}\bigr)\dd t=0 .
+\]
+No es exacta: $\partial_tB=0$, pero $\partial_TA=k\neq0$. Se busca un factor integrante $\mu(t)$ tal que $\partial_t(\mu B)=\partial_T(\mu A)$, es decir, $\dot\mu=k\mu$, y se toma $\mu=\ee^{kt}$. La forma
+\[
+  \dd F=\ee^{kt}\,\dd T+\ee^{kt}\bigl(kT-kS_0\,\ee^{-\omega t}\bigr)\dd t
+\]
+es exacta, con $F_T=\ee^{kt}$ y $F_t=\ee^{kt}(kT-kS_0\,\ee^{-\omega t})$. Integrando respecto a $t$:
+\[
+  F(t,T)=\int\ee^{kt}\bigl(kT-kS_0\,\ee^{-\omega t}\bigr)\dd t=T\,\ee^{kt}-\frac{kS_0}{k-\omega}\,\ee^{(k-\omega)t}+\phi(T).
+\]
+La condición $F_T=\ee^{kt}$ da $\phi'(T)=0$, $\phi=c_1$. Luego $F=\text{cte}$ y, despejando,
+\[
+  T=\Bigl(\frac{kS_0}{k-\omega}\,\ee^{(k-\omega)t}+C\Bigr)\ee^{-kt},
+\]
+que coincide con la solución del caso A.
+
+\metodo{Método como ecuación lineal (factor integrante)}
+Con \eqref{eq:newton-general}, $T=\ee^{-kt}\bigl[T_0+kS_0\int_0^t\ee^{(k-\omega)s}\,\dd s\bigr]$. El resultado es \eqref{eq:p2-A} si $k\neq\omega$; si $k=\omega$ el integrando es $1$ y resulta \eqref{eq:p2-B}.
+
+\metodo{Comprobación: límite $k\to\omega$}
+En \eqref{eq:p2-A}, el término $kS_0\dfrac{\ee^{-\omega t}-\ee^{-kt}}{k-\omega}$ es indeterminado ($0/0$) cuando $k\to\omega$; por L'Hôpital respecto a $k$ tiende a $kS_0\,t\,\ee^{-kt}$, y se recupera \eqref{eq:p2-B}.
+\end{solucion}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=14, ymin=0, ymax=105,
+      xlabel={$t$}, ylabel={$T$}, legend columns=2, legend style={at={(0.97,0.95)}, anchor=north east},
+      declare function={ p2T(\t,\k)=(\k*50/(\k-0.5))*exp(-0.5*\t)+(100-\k*50/(\k-0.5))*exp(-\k*\t); }]
+      \addplot[serie3, domain=0:14, samples=120] {50*exp(-0.5*x)};
+      \addlegendentry{$S(t)$}
+      \addplot[serie1, domain=0:14, samples=120] {p2T(x,1)};
+      \addlegendentry{$k=2\omega$}
+      \addplot[serie2, domain=0:14, samples=120] {(100+0.5*50*x)*exp(-0.5*x)};
+      \addlegendentry{$k=\omega$}
+      \addplot[serie4, domain=0:14, samples=120] {p2T(x,0.25)};
+      \addlegendentry{$k=\omega/2$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Problema~2. Respuesta del objeto a un ambiente $S=S_0\,\ee^{-\omega t}$ ($S_0=50$, $\omega=0{,}5$, $T_0=100$). En el caso $k=\omega$ aparece el factor lineal $t$.}
+  \label{fig:p2}
+\end{figure}
+
+\subsubsection*{Problema 3: distancia de frenado con $F=-k/v^2$}
+
+\begin{solucion}
+La segunda ley de Newton da $m\,\dot v=-k/v^2$, con $x(0)=0$ (o $x_0$) y $v(0)=v_0$.
+
+\metodo{Método A: regla de la cadena (la distancia sin pasar por $t$)}
+Como se pide la distancia y no el tiempo, se expresa la aceleración en función de la posición:
+\[
+  a=\dv{v}{t}=\dv{v}{x}\dv{x}{t}=v\dv{v}{x}.
+\]
+La ecuación se escribe $m\,v\,\dv{v}{x}=-\dfrac{k}{v^2}$, de variables separables: $m\,v^3\,\dd v=-k\,\dd x$. En el estado final el móvil se detiene: $v=0$, $x=d$. Integrando entre las condiciones inicial y final,
+\[
+  \int_{v_0}^{0}m\,v^3\,\dd v=\int_0^d(-k)\,\dd x
+  \;\Longrightarrow\;
+  m\Bigl[\frac{v^4}{4}\Bigr]_{v_0}^{0}=-k\,d
+  \;\Longrightarrow\;
+  -\frac{mv_0^4}{4}=-kd,
+\]
+de modo que
+\begin{equation}
+  \boxed{\,d=\frac{m\,v_0^4}{4k}\,}\qquad(\text{más }x_0\text{ si }x(0)=x_0).
+  \label{eq:p3-d}
+\end{equation}
+
+\metodo{Método B: integrando dos veces}
+\emph{Velocidad.} De $v^2\,\dd v=-\dfrac km\,\dd t$ se obtiene $\dfrac{v^3}{3}=-\dfrac km\,t+c$. Con $v(0)=v_0$, $c=v_0^3/3$, luego
+\[
+  v(t)=\Bigl(v_0^3-\frac{3k}{m}\,t\Bigr)^{1/3}.
+\]
+\emph{Tiempo de parada.} $v(T)=0$ da $T=\dfrac{mv_0^3}{3k}$.
+
+\emph{Posición.} De $\dot x=\bigl(v_0^3-\tfrac{3k}{m}t\bigr)^{1/3}$,
+\[
+  x(t)=c'-\frac{m}{4k}\Bigl(v_0^3-\frac{3k}{m}\,t\Bigr)^{4/3},
+\]
+y con $x(0)=x_0$, $c'=x_0+\dfrac{mv_0^4}{4k}$:
+\[
+  x(t)=x_0+\frac{mv_0^4}{4k}-\frac{m}{4k}\Bigl(v_0^3-\frac{3k}{m}\,t\Bigr)^{4/3}.
+\]
+En $t=T$ el paréntesis se anula, y $x(T)=x_0+\dfrac{mv_0^4}{4k}$, que coincide con \eqref{eq:p3-d}.
+\end{solucion}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=0.4, ymin=0, ymax=1.08,
+      xtick={0,0.1,0.2,0.3,0.4}, xlabel={$t/T_\ast$ con $T_\ast=mv_0^3/k$}, ylabel={$v/v_0$, $x/d$}, legend style={at={(0.97,0.55)}, anchor=east}]
+      \addplot[asintota, forget plot, domain=0:0.4, samples=2] {1};
+      \addplot[serie1, domain=0:0.3333, samples=100] {(1-3*x)^(1/3)};
+      \addlegendentry{$v/v_0$}
+      \addplot[serie4, domain=0:0.3333, samples=100] {1-(1-3*x)^(4/3)};
+      \addlegendentry{$x/d$}
+      \addplot[only marks, mark=*, mark size=1.6pt, color=azulOscuro, forget plot] coordinates {(0.3333,0)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Problema~3. Velocidad y distancia recorrida (normalizadas); el móvil se detiene en $T=mv_0^3/(3k)$ habiendo recorrido $d=mv_0^4/(4k)$.}
+  \label{fig:p3}
+\end{figure}
+
+\subsubsection*{Problema 4: circuito $RL$ con $U=U_0\,\ee^{-\omega t}$ cuando $\omega\to R/L$}
+
+\begin{solucion}
+Por la segunda ley de Kirchhoff, $RI+L\dot I=U_0\,\ee^{-\omega t}$, es decir, $\dot I+\frac RL I=\frac{U_0}{L}\,\ee^{-\omega t}$, con $I(0)=0$. Para $\omega\neq R/L$, la \cref{prop:rl} da
+\[
+  I(t)=\frac{U_0}{R-\omega L}\Bigl(\ee^{-\omega t}-\ee^{-(R/L)t}\Bigr),
+\]
+(homogénea $I_h=c_0\,\ee^{-(R/L)t}$; particular $I_p=\frac{U_0}{R-\omega L}\,\ee^{-\omega t}$ por Lagrange; $I(0)=0$ fija $c_0$). Al hacer $\omega\to R/L$ aparece la indeterminación $0/0$. Se puede resolver de tres formas.
+
+\metodo{Método A: regla de L'Hôpital}
+Derivando numerador y denominador respecto a $\omega$:
+\[
+  \lim_{\omega\to R/L}I(t)=\lim_{\omega\to R/L}\frac{\partial_\omega\bigl[U_0\bigl(\ee^{-\omega t}-\ee^{-(R/L)t}\bigr)\bigr]}{\partial_\omega\,(R-\omega L)}
+  =\lim_{\omega\to R/L}\frac{-U_0\,t\,\ee^{-\omega t}}{-L}
+  =\frac{U_0}{L}\,t\,\ee^{-(R/L)t}.
+\]
+
+\metodo{Método B: desarrollo de Taylor}
+Se escribe $I=\dfrac{U_0}{R-\omega L}\,\ee^{-(R/L)t}\Bigl[\ee^{(R/L-\omega)t}-1\Bigr]$. Para $\omega\to R/L$, el desarrollo de primer orden $\ee^{z}\simeq1+z$ con $z=(R/L-\omega)t$ da
+\[
+  I\simeq\frac{U_0}{R-\omega L}\,\ee^{-(R/L)t}\Bigl(\frac RL-\omega\Bigr)t
+  =\frac{U_0}{L}\,t\,\ee^{-(R/L)t},
+\]
+ya que $R-\omega L=L\,(R/L-\omega)$.
+
+\metodo{Método C: resolución directa del caso resonante}
+Con $\omega=R/L$ el término forzante $\ee^{-(R/L)t}$ coincide con la solución de la homogénea. Por Lagrange, $I_p=\kappa(t)\,\ee^{-(R/L)t}$ da $\dot\kappa=U_0/L$, luego $\kappa=U_0t/L$ ($I(0)=0$ implica que la constante es nula). Equivalentemente, el ensayo $I_p=c\,t\,\ee^{-(R/L)t}$ da $c=U_0/L$.
+
+En los tres casos,
+\begin{equation}
+  \boxed{\,I(t)=\frac{U_0}{L}\,t\,\ee^{-(R/L)t}\,}
+  \label{eq:p4}
+\end{equation}
+\end{solucion}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=8, ymin=0, ymax=0.45,
+      xlabel={$t$ (con $R/L=1$, $U_0/L=1$)}, ylabel={$I$}, legend columns=2,
+      legend style={at={(0.97,0.95)}, anchor=north east},
+      declare function={ rl(\t,\a)=(exp(-\a*\t)-exp(-\t))/(1-\a); }]
+      \addplot[serie3, domain=0:8, samples=120] {rl(x,0.5)};
+      \addlegendentry{$\omega=0{,}5\,R/L$}
+      \addplot[serie2, domain=0:8, samples=120] {rl(x,0.8)};
+      \addlegendentry{$\omega=0{,}8\,R/L$}
+      \addplot[serie4, domain=0:8, samples=120] {rl(x,0.95)};
+      \addlegendentry{$\omega=0{,}95\,R/L$}
+      \addplot[serie1, line width=1.5pt, domain=0:8, samples=120] {x*exp(-x)};
+      \addlegendentry{límite}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Problema~4. Al aproximar $\omega\to R/L$ las curvas convergen a la respuesta resonante $t\,\ee^{-t}$.}
+  \label{fig:p4}
+\end{figure}
+
+\subsubsection*{Problema 5: desintegración radiactiva}
+
+\begin{solucion}
+Sea $Q(t)$ la cantidad de elemento radiactivo, con $Q(0)=Q_0$. Por hipótesis, la tasa de desintegración es proporcional a la cantidad presente:
+\[
+  \dv{Q}{t}=-kQ,\qquad k>0 .
+\]
+Por separación de variables, $Q(t)=Q_0\,\ee^{-kt}$. El periodo de vida media $\tau$ es el tiempo en que la cantidad se reduce a la mitad, $Q(\tau)=Q_0/2$:
+\[
+  Q_0\,\ee^{-k\tau}=\frac{Q_0}{2}\;\Longrightarrow\;k\tau=\ln2\;\Longrightarrow\;k=\frac{\ln2}{\tau}.
+\]
+En función de los parámetros pedidos,
+\begin{equation}
+  \boxed{\,Q(t)=Q_0\,\ee^{-\frac{\ln2}{\tau}\,t}=\frac{Q_0}{2^{\,t/\tau}}\,}
+  \label{eq:p5}
+\end{equation}
+Tras $n$ periodos quedan $Q_0/2^n$. La vida media (tiempo medio de vida de un núcleo) es $1/k=\tau/\ln2\approx1{,}44\,\tau$.
+\end{solucion}
+
+\begin{example}
+El carbono-14 tiene $\tau\approx\num{5730}$ años. Una muestra conserva el 12,5\,\% de su $^{14}$C inicial cuando $2^{-t/\tau}=2^{-3}$, es decir, $t=3\tau\approx\num{17190}$ años.\finejemplo
+\end{example}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, width=0.8\linewidth, height=5.6cm, xmin=0, xmax=4.2, ymin=0, ymax=1.05,
+      xlabel={$t/\tau$}, ylabel={$Q/Q_0$}, xtick={0,1,2,3,4}, ytick={0,0.125,0.25,0.5,1},
+      yticklabels={$0$,$\tfrac18$,$\tfrac14$,$\tfrac12$,$1$}]
+      \addplot[serie1, domain=0:4.2, samples=100] {2^(-x)};
+      \addplot[only marks, mark=*, mark size=1.6pt, color=azulOscuro]
+        coordinates {(0,1) (1,0.5) (2,0.25) (3,0.125)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Problema~5. Decaimiento radiactivo: cada periodo de vida media la cantidad se reduce a la mitad.}
+  \label{fig:p5}
+\end{figure}
+
+\subsubsection*{Problema 6: el zorro y el conejo con la misma velocidad}
+
+\begin{solucion}
+Con las notaciones de la \cref{sec:competicion-pers}, $k=\hat v/v=1$ y el zorro cumple $x\,y''=\sqrt{1+y'^2}$, con $y(a)=0$ e $y'(a)=0$. Para $k=1$, la solución general \eqref{eq:pers-sol} no es válida (aparecería $1/(1-k)$), pero \eqref{eq:pers-yp} sí lo es:
+\[
+  p\equiv y'=\frac12\Bigl(\frac xa-\frac ax\Bigr),\qquad
+  \sqrt{1+p^2}=\frac12\Bigl(\frac xa+\frac ax\Bigr).
+\]
+\emph{Trayectoria.} Integrando, $y=\dfrac{x^2}{4a}-\dfrac a2\ln x+C$, y con $y(a)=0$:
+\[
+  y(x)=\frac{x^2-a^2}{4a}+\frac a2\ln\frac ax .
+\]
+\emph{Posición del conejo.} Por \eqref{eq:pers-direccion}, $\hat y=\hat vt=y-xy'$. Como $xy'=\dfrac12\Bigl(\dfrac{x^2}{a}-a\Bigr)$,
+\[
+  \hat y(x)=\frac{a^2-x^2}{4a}+\frac a2\ln\frac ax .
+\]
+\emph{Distancia entre ambos.} Si $x\to0$, $\hat y\to+\infty$: el conejo se aleja indefinidamente y el instante $t=\hat y/\hat v$ tiende a infinito, sin que el zorro llegue a $x=0$ en tiempo finito. Para cada valor de $x\in(0,a]$, la distancia $d$ cumple
+\[
+  d^2=(x-\hat x)^2+(y-\hat y)^2=x^2+(xy')^2=x^2+\Bigl(\frac{a^2-x^2}{2a}\Bigr)^{2}=\Bigl(\frac{x^2+a^2}{2a}\Bigr)^{2},
+\]
+es decir,
+\begin{equation}
+  d(x)=\frac{x^2+a^2}{2a}>\frac a2\quad\text{para todo }x>0,
+  \qquad d\to\frac a2\ \text{cuando }x\to0 .
+  \label{eq:p6-d}
+\end{equation}
+Por tanto, el zorro nunca alcanza al conejo, y la distancia mínima (alcanzada asintóticamente, para $t\to\infty$) es $a/2$.
+\end{solucion}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=1.05, ymin=0, ymax=2.2,
+        xlabel={$x/a$}, ylabel={$y/a,\ \hat y/a$}, legend style={at={(0.97,0.95)}, anchor=north east}]
+        \addplot[serie1, domain=0.03:1, samples=150] {(x*x-1)/4+0.5*ln(1/x)};
+        \addlegendentry{zorro $y$}
+        \addplot[serie4, domain=0.03:1, samples=150] {(1-x*x)/4+0.5*ln(1/x)};
+        \addlegendentry{conejo $\hat y$}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Altura del zorro y del conejo frente a $x$.}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=1.05, ymin=0, ymax=1.05,
+        xlabel={$x/a$}, ylabel={$d/a$}]
+        \addplot[asintota, forget plot, domain=0:1.05, samples=2] {0.5};
+        \addplot[serie1, domain=0:1, samples=100] {(x*x+1)/2};
+        \node[font=\small, text=gris, anchor=north west] at (axis cs:0.05,0.48) {$a/2$};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Distancia $d(x)=(x^2+a^2)/2a$.}
+  \end{subfigure}
+  \caption{Problema~6 ($k=1$). La distancia entre zorro y conejo decrece hasta $a/2$ sin llegar a anularse.}
+  \label{fig:p6}
+\end{figure}
+
+\subsection{Complemento: ecuación lineal frente a forma de Pfaff}
+
+Sobre una misma ecuación, estos dos caminos conducen al mismo resultado. Se ilustra con el siguiente ejemplo.
+
+\begin{example}
+Resolver $y'-\dfrac{xy}{x^2+1}=\dfrac{x^2-x+1}{x^2+1}\,\ee^x$ como ecuación lineal y buscando un factor integrante.
+
+\metodo{Como ecuación lineal}
+\emph{Homogénea.} $y_h'=\dfrac{xy_h}{x^2+1}$ da $y_h=c_0\,(x^2+1)^{1/2}$. \emph{Variación de la constante.} Con $y_p=c(x)\,(x^2+1)^{1/2}$,
+\[
+  c'=(x^2+1)^{-1/2}\,\ee^x\Bigl(1-\frac{x}{x^2+1}\Bigr)=\dv{}{x}\Bigl[\ee^x\,(x^2+1)^{-1/2}\Bigr]
+  \;\Longrightarrow\;c=\frac{\ee^x}{(x^2+1)^{1/2}}\;\Longrightarrow\;y_p=\ee^x .
+\]
+La solución general es $y=c_0\,(x^2+1)^{1/2}+\ee^x$.
+
+\metodo{Como forma de Pfaff}
+La ecuación equivale a $\alpha=\Bigl(\dfrac{xy}{x^2+1}+\dfrac{x^2-x+1}{x^2+1}\,\ee^x\Bigr)\dd x-\dd y=0$. No es exacta. Se busca $\mu(x)$ con $\partial_y(\mu M)=\partial_x(\mu N)$, siendo $M=\dfrac{xy}{x^2+1}+\dfrac{x^2-x+1}{x^2+1}\,\ee^x$ y $N=-1$:
+\[
+  \mu\,\frac{x}{x^2+1}=-\mu'\;\Longrightarrow\;\mu=(1+x^2)^{-1/2}.
+\]
+La forma $\dd F=\mu M\,\dd x-\mu\,\dd y$ es exacta, y $F_y=-\mu$ da $F=-(1+x^2)^{-1/2}\,y+\phi(x)$. Imponiendo $F_x=\mu M$ se obtiene $\phi(x)=\ee^x\,(1+x^2)^{-1/2}$. De $F=\text{cte}$:
+\[
+  y=\ee^x-k\,(1+x^2)^{1/2}.
+\]
+\finejemplo
+\end{example}

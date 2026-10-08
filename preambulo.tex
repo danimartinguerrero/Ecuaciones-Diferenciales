@@ -17,6 +17,7 @@
 \usepackage{array}
 \usepackage{float}
 \usepackage{fancyhdr}
+\usepackage{needspace}
 \usepackage{titlesec}
 \usepackage{xcolor}
 \usepackage{caption}
@@ -80,7 +81,8 @@
 
 % --- Gráficas ---
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, calc, positioning}
+\usetikzlibrary{arrows.meta, calc, positioning, decorations.markings}
+\usepackage[siunitx]{circuitikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.17}
 \pgfplotsset{
@@ -104,28 +106,25 @@
 % ==========================================================
 %  ENTORNOS
 % ==========================================================
-\usepackage{thmtools}
 \usepackage[most]{tcolorbox}
 
 \newcommand{\etiquetaEntorno}[1]{\textsc{#1}}
 
 % Teoremas, proposiciones, lemas, corolarios: cuerpo en cursiva, encabezado azul
-\declaretheoremstyle[
-  headfont=\bfseries\color{azulOscuro}, notefont=\bfseries\color{azulOscuro}, notebraces={(}{)},
-  bodyfont=\itshape, postheadspace=0.6em, headpunct={.},
-  spaceabove=10pt, spacebelow=10pt]{enunciado}
+\newtheoremstyle{enunciado}{9pt}{9pt}{\itshape}{}{\bfseries\color{azulOscuro}}{.}{0.6em}%
+  {\thmname{#1}\ \thmnumber{#2}\thmnote{\ (#3)}}
 % Ejemplos y observaciones: cuerpo recto, encabezado en cursiva azul
-\declaretheoremstyle[
-  headfont=\itshape\bfseries\color{azulMedio}, notefont=\itshape\color{azulMedio}, notebraces={(}{)},
-  bodyfont=\normalfont, postheadspace=0.6em, headpunct={.},
-  spaceabove=8pt, spacebelow=8pt]{nota}
+\newtheoremstyle{nota}{8pt}{8pt}{\normalfont}{}{\itshape\bfseries\color{azulMedio}}{.}{0.6em}%
+  {\thmname{#1}\ \thmnumber{#2}\thmnote{\ (#3)}}
 
-\declaretheorem[style=enunciado, name=Teorema, numberwithin=section]{theorem}
-\declaretheorem[style=enunciado, name=Proposición, sibling=theorem]{proposition}
-\declaretheorem[style=enunciado, name=Lema, sibling=theorem]{lemma}
-\declaretheorem[style=enunciado, name=Corolario, sibling=theorem]{corollary}
-\declaretheorem[style=nota, name=Ejemplo, numberwithin=section]{example}
-\declaretheorem[style=nota, name=Observación, sibling=example]{remark}
+\theoremstyle{enunciado}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{proposition}[theorem]{Proposición}
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{corollary}[theorem]{Corolario}
+\theoremstyle{nota}
+\newtheorem{example}{Ejemplo}[section]
+\newtheorem{remark}[example]{Observación}
 
 \renewcommand{\qedsymbol}{\textcolor{azulMedio}{$\blacksquare$}}
 \renewcommand{\proofname}{\itshape Demostración}
@@ -198,3 +197,20 @@
 
 % Resumen estilo AMS
 \newenvironment{resumen}{\small\begin{quote}\noindent\textsc{Resumen.}\ }{\end{quote}}
+
+% --- Utilidades adicionales ---
+\usepackage{subcaption}
+\captionsetup[subfigure]{font=footnotesize, labelfont={color=azulOscuro}, labelsep=period}
+\newcommand{\metodo}[1]{\par\smallskip\noindent\textbf{\textcolor{azulMedio}{#1.}}\ }
+\newenvironment{solucion}{\par\smallskip\noindent\textit{\textcolor{azulOscuro}{Solución.}}\ }{\hfill\textcolor{azulMedio}{$\diamond$}\par\smallskip}
+\newcommand{\Tf}{t_{\mathrm{f}}}
+
+% Problemas de seminario
+\newcounter{problema}[section]
+\renewcommand{\theproblema}{\thesection.\arabic{problema}}
+\newtcolorbox{problema}[1][]{
+  enhanced, breakable, blanker,
+  borderline west={1.2pt}{0pt}{azulMedio},
+  left=12pt, top=3pt, bottom=3pt,
+  before skip=12pt, after skip=6pt,
+  before upper={\refstepcounter{problema}\noindent{\bfseries\color{azulOscuro} Problema \theproblema\if\relax\detokenize{#1}\relax\else\ (#1)\fi.}\ }}

@@ -1,0 +1,100 @@
+\Needspace{12\baselineskip}
+\section{Circuitos eléctricos}
+
+Consideremos un circuito con una resistencia $R$ y una autoinducción $L$ conectadas en serie con una fuente de tensión $U(t)$.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[american, scale=0.9]
+    \draw (0,0) to[sinusoidal voltage source, l=$U(t)$] (0,3)
+          to[short] (4,3)
+          to[cute inductor, l=$L$, i>^=$I(t)$] (4,0)
+          to[R, l=$R$] (0,0);
+  \end{tikzpicture}
+  \caption{Circuito $RL$ en serie con una fuente de tensión $U(t)$.}
+  \label{fig:circuito}
+\end{figure}
+
+\begin{modelo}[segunda ley de Kirchhoff]
+La intensidad $I(t)$ que circula por el circuito cumple
+\begin{equation}
+  U(t)=R\,I+L\dv{I}{t},
+  \label{eq:kirchhoff}
+\end{equation}
+donde $U(t)$ es la diferencia de potencial aplicada. Equivale a la ecuación lineal $\dot I+\dfrac RL\,I=\dfrac{U(t)}{L}$, de la forma $\dot I+a(t)I=b(t)$.
+\end{modelo}
+
+\begin{remark}[análisis dimensional]
+De $[RI]=[L\,\dot I]$ se obtiene $[R]=[L]/[\mathrm T]$, de modo que $[R/L]=[\mathrm T]^{-1}$ tiene dimensiones de frecuencia. La constante de tiempo del circuito es $\tau=L/R$.
+\end{remark}
+
+\subsection*{Descarga exponencial de la batería}
+
+Tomemos $U(t)=U_0\,\ee^{-\alpha t}$, con $[\alpha]=[\mathrm T]^{-1}$ (dimensiones de frecuencia). La ecuación a resolver es
+\begin{equation}
+  R\,I+L\dv{I}{t}=U_0\,\ee^{-\alpha t}
+  \;\Longleftrightarrow\;
+  \dot I+\frac RL\,I=\frac{U_0}{L}\,\ee^{-\alpha t},
+  \qquad I(0)=0 .
+  \label{eq:rl-descarga}
+\end{equation}
+
+\begin{proposition}[corriente en el circuito $RL$]\label{prop:rl}
+Si $\alpha\neq R/L$, la solución de \eqref{eq:rl-descarga} es
+\begin{equation}
+  I(t)=\frac{U_0}{R-\alpha L}\Bigl(\ee^{-\alpha t}-\ee^{-(R/L)t}\Bigr).
+  \label{eq:rl-sol}
+\end{equation}
+Si $\alpha=R/L$ (\emph{resonancia}), la solución es
+\begin{equation}
+  I(t)=\frac{U_0}{L}\,t\,\ee^{-(R/L)t}.
+  \label{eq:rl-resonancia}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+\emph{Homogénea.} $\dot I_h+\frac RL I_h=0$ da $\dd I_h/I_h+\frac RL\,\dd t=0$, luego $\ln I_h+\frac RL t=\text{cte}$ e $I_h=c_0\,\ee^{-(R/L)t}$.
+
+\emph{Variación de la constante (Lagrange), $\alpha\neq R/L$.} Se busca $I_p=\kappa(t)\,\ee^{-(R/L)t}$. Al sustituir se cancelan los términos en $\kappa$ y queda
+\[
+  \dot\kappa\,\ee^{-(R/L)t}=\frac{U_0}{L}\,\ee^{-\alpha t}
+  \;\Longrightarrow\;
+  \dot\kappa=\frac{U_0}{L}\,\ee^{(R/L-\alpha)t}
+  \;\Longrightarrow\;
+  \kappa=\frac{U_0}{L}\,\frac{\ee^{(R/L-\alpha)t}}{R/L-\alpha}.
+\]
+Por tanto, $I_p=\dfrac{U_0}{L(R/L-\alpha)}\,\ee^{-\alpha t}=\dfrac{U_0}{R-\alpha L}\,\ee^{-\alpha t}$, y la solución general es $I=c_0\,\ee^{-(R/L)t}+\dfrac{U_0}{R-\alpha L}\,\ee^{-\alpha t}$. La condición $I(0)=0$ da $c_0=-\dfrac{U_0}{R-\alpha L}$, es decir, \eqref{eq:rl-sol}. La integración solo es posible si $\alpha\neq R/L$.
+
+\emph{Caso $\alpha=R/L$.} Ahora $\dot\kappa=U_0/L$, luego $\kappa=U_0t/L+c_0$, y $I(0)=0$ da $c_0=0$, es decir, \eqref{eq:rl-resonancia}.
+\end{proof}
+
+\begin{remark}[resonancia]
+En el caso $\alpha=R/L$ la constante de atenuación del estímulo externo coincide con la constante de relajación natural del circuito, $R/L$. Como el término forzante $\ee^{-\alpha t}$ ya es solución de la homogénea, la respuesta se amplifica transitoriamente por un factor lineal $t$, antes de que el decaimiento exponencial acabe por disipar la energía del sistema. La intensidad es máxima en $t=L/R$, con $I_{\mathrm{max}}=U_0/(\ee R)$. Para $\alpha\to R/L$ se puede llegar a \eqref{eq:rl-resonancia} como límite de \eqref{eq:rl-sol}, con la regla de L'Hôpital o con un desarrollo de Taylor (problema~4 de la \cref{sec:seminarios}).
+\end{remark}
+
+\begin{remark}[batería constante]
+Si $\alpha\to0$ en \eqref{eq:rl-sol} se obtiene $I(t)=\dfrac{U_0}{R}\bigl(1-\ee^{-Rt/L}\bigr)$, que tiende al valor de Ohm, $U_0/R$, con constante de tiempo $\tau=L/R$.
+\end{remark}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[informe, xmin=0, xmax=8, ymin=0, ymax=0.8,
+      xlabel={$t$ (con $R/L=1$, $U_0/L=1$)}, ylabel={$I$}, legend columns=2,
+      legend style={at={(0.97,0.95)}, anchor=north east},
+      declare function={ rl(\t,\a)=(exp(-\a*\t)-exp(-\t))/(1-\a); }]
+      \addplot[serie3, domain=0:8, samples=120] {rl(x,0.25)};
+      \addlegendentry{$\alpha=\tfrac14\tfrac RL$}
+      \addplot[serie2, domain=0:8, samples=120] {rl(x,0.5)};
+      \addlegendentry{$\alpha=\tfrac12\tfrac RL$}
+      \addplot[serie1, line width=1.5pt, domain=0:8, samples=120] {x*exp(-x)};
+      \addlegendentry{$\alpha=\tfrac RL$}
+      \addplot[serie4, domain=0:8, samples=120] {rl(x,2)};
+      \addlegendentry{$\alpha=2\tfrac RL$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Intensidad en el circuito $RL$ con $U=U_0\,\ee^{-\alpha t}$. En resonancia ($\alpha=R/L$) la respuesta es $t\,\ee^{-t}$, con máximo en $t=L/R$.}
+  \label{fig:rl}
+\end{figure}
+
+\newpage

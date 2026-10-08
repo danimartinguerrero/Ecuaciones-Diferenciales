@@ -1,16 +1,17 @@
+\Needspace{12\baselineskip}
 \section{Dinámica de poblaciones}
 
-Sea $P(t)$ el tamaño de una población. Los modelos de esta sección son ecuaciones autónomas $\dot P = f(P)$, donde $f(P)=P\,g(P)$ y $g$ es la tasa de crecimiento per cápita. Los modelos difieren en la forma de $g$.
+Sea $P(t)$ el tamaño de una población. Los modelos de esta sección son ecuaciones autónomas $\dot P = f(P)$ con $f(P)=P\,g(P)$, donde $g$ es la tasa de crecimiento per cápita. Los modelos difieren en la forma de $g$.
 
 \subsection{El modelo de Malthus}
 
 \begin{definicion}[Modelo de Malthus]{Modelo de Malthus}
-La tasa de crecimiento per cápita es constante, $g\equiv k$:
+La tasa de crecimiento per cápita es constante, $g\equiv k$. Para una población inicial $P(0)=P_0>0$:
 \begin{equation}
-  \dv{P}{t} = kP, \qquad P(0)=P_0>0,
+  \dv{P}{t} = kP,
   \label{eq:malthus}
 \end{equation}
-donde $k=\text{natalidad}-\text{mortalidad}$.
+donde $k$ es la diferencia entre la tasa de natalidad y la de mortalidad. Es un mecanismo de control de la población.
 \end{definicion}
 
 Por separación de variables, $\int \dd P/P = \int k\,\dd t$, y por tanto
@@ -19,46 +20,58 @@ Por separación de variables, $\int \dd P/P = \int k\,\dd t$, y por tanto
   \label{eq:malthus-sol}
 \end{equation}
 
-Si $k>0$ la población crece exponencialmente, con tiempo de duplicación $t_2=\ln 2/k$; si $k<0$ se extingue exponencialmente. En ambos casos el modelo carece de límite superior, lo que lo hace inválido a largo plazo cuando los recursos son finitos.
+Si $k>0$ la población crece exponencialmente (explosión demográfica), con tiempo de duplicación $t_2=\ln 2/k$; si $k<0$ se extingue exponencialmente (por ejemplo, una epidemia fatal que aniquila la población). Un crecimiento exponencial indefinido no es realista cuando los recursos son finitos: el modelo no impone ninguna cota superior.
 
 \subsection{El modelo logístico}
 
 \begin{definicion}[Modelo logístico]{Modelo logístico (Verhulst)}
-La tasa per cápita decrece linealmente con $P$ y se anula en la capacidad de carga $M>0$:
+Sea $M>0$ la población máxima sostenible con los recursos disponibles. El modelo logístico es
 \begin{equation}
-  \dv{P}{t} = rP\Bigl(1-\frac{P}{M}\Bigr), \qquad P(0)=P_0>0,
+  \dv{P}{t} = r\,(M-P)\,P, \qquad P(0)=P_0>0,
   \label{eq:logistica}
 \end{equation}
-con $r>0$ la tasa de crecimiento intrínseca.
+con $r>0$ relacionada con la tasa de crecimiento. Para $P\ll M$ se recupera el modelo de Malthus con $k=rM$.
 \end{definicion}
 
-La ecuación \eqref{eq:logistica} es de Bernoulli con exponente $2$. Sus equilibrios son $P=0$ (inestable) y $P=M$ (asintóticamente estable).
+La ecuación \eqref{eq:logistica} es de Riccati. Como $P\equiv 0$ es una solución trivial, es además un caso particular de ecuación de Bernoulli ($n=2$). Sus equilibrios son $P=0$ (inestable) y $P=M$ (asintóticamente estable).
+
+\begin{algoritmo}[Riccati con una solución conocida]
+\begin{pasos}
+  \item Identificar una solución particular $P_1$ (aquí $P_1\equiv 0$, o bien $P_1\equiv M$).
+  \item Sustituir $P=P_1+1/z$. Con $P_1=0$: $P=1/z$ y $\dot P=-\dot z/z^2$.
+  \item Resolver la ecuación lineal resultante en $z(t)$ (homogénea más solución particular).
+  \item Deshacer el cambio, $P=1/z$, e imponer $P(0)=P_0$.
+\end{pasos}
+\end{algoritmo}
 
 \begin{proposition}[solución logística]\label{prop:logistica}
 La solución de \eqref{eq:logistica} es
 \begin{equation}
-  P(t) = \frac{M P_0}{P_0 + (M-P_0)\,\ee^{-rt}},
+  P(t) = \frac{M P_0}{P_0 + (M-P_0)\,\ee^{-rMt}} = \frac{M}{1+\Bigl(\dfrac{M}{P_0}-1\Bigr)\ee^{-rMt}},
   \label{eq:logistica-sol}
 \end{equation}
 y $P(t)\to M$ cuando $t\to\infty$ para todo $P_0>0$.
 \end{proposition}
 
 \begin{proof}
-Con $z=1/P$ se tiene $\dot z = -\dot P/P^2$, y \eqref{eq:logistica} se convierte en la ecuación lineal
+Con $P=1/z$, la ecuación \eqref{eq:logistica} da
 \[
-  \dot z + r z = \frac{r}{M}.
+  -\frac{1}{z^2}\dot z = \frac{rM}{z}-\frac{r}{z^2}
+  \quad\Longrightarrow\quad
+  \dot z + rM\,z = r.
 \]
-Su solución es $z(t)=\tfrac1M + C\,\ee^{-rt}$, y $z(0)=1/P_0$ da $C=\tfrac{M-P_0}{MP_0}$. Entonces $P=1/z$ coincide con \eqref{eq:logistica-sol}.
+Una solución particular es $z_p=1/M$ (se comprueba: $\dot z_p=0$ y $rM/M=r$); la homogénea es $z_h=c\,\ee^{-rMt}$. Entonces $z=\tfrac1M + c\,\ee^{-rMt}$, y
+$z(0)=1/P_0$ da $c=\tfrac1{P_0}-\tfrac1M$. Invirtiendo $P=1/z$:
+\[
+  P=\frac{1}{\tfrac1M+\bigl(\tfrac1{P_0}-\tfrac1M\bigr)\ee^{-rMt}}
+   =\frac{M}{1+\bigl(\tfrac{M}{P_0}-1\bigr)\ee^{-rMt}}.
+\]
+Para $t=0$ se obtiene $P_0$ y, para $t\to\infty$, $M$.
 \end{proof}
 
-\begin{algoritmo}[ecuaciones de Bernoulli $y'+a(x)y=b(x)y^n$]
-\begin{pasos}
-  \item Reducir a la forma $y'+a\,y=b\,y^n$ con $n\neq 0,1$.
-  \item Sustituir $z=y^{1-n}$, de modo que $z'=(1-n)y^{-n}y'$.
-  \item Resolver la ecuación lineal $z'+(1-n)a\,z=(1-n)b$.
-  \item Deshacer el cambio: $y=z^{1/(1-n)}$, y ajustar la condición inicial.
-\end{pasos}
-\end{algoritmo}
+\begin{remark}
+El modelo es autosostenible: evita la catástrofe demográfica en la que la población crece o decrece indefinidamente (por ejemplo, durante una epidemia). Si $P_0<M$ la población crece hacia $M$ con forma sigmoidea; si $P_0>M$ decrece monótonamente hacia $M$. Además, $\ddot P = r(M-2P)\dot P$, de modo que el punto de inflexión se sitúa en $P=M/2$.
+\end{remark}
 
 \begin{figure}[H]
   \centering
@@ -72,31 +85,45 @@ Su solución es $z(t)=\tfrac1M + C\,\ee^{-rt}$, y $z(0)=1/P_0$ da $C=\tfrac{M-P_
       \addlegendentry{$P_0<M$}
       \addplot[serie2, domain=0:10, samples=100] {16000/(160-60*exp(-0.8*x))};
       \addlegendentry{$P_0>M$}
+      \addplot[serie3, domain=0:10, samples=100] {0};
+      \addlegendentry{$P=0$}
     \end{axis}
   \end{tikzpicture}
-  \caption{Soluciones logísticas con $M=100$, $r=0{,}8$. Si $P_0<M$ la curva es sigmoidea; si $P_0>M$ decrece monótonamente hacia $M$.}
+  \caption{Soluciones logísticas con $M=100$ y $rM=0{,}8$. Si $P_0<M$ la curva es sigmoidea; si $P_0>M$ decrece monótonamente hacia $M$.}
   \label{fig:logistica}
 \end{figure}
 
 \subsection{La ley de Gompertz}
 
 \begin{definicion}[Ley de Gompertz]{Ley de Gompertz}
-La tasa per cápita es proporcional al logaritmo del cociente entre la capacidad de carga y la población:
+La variación de la población obedece
 \begin{equation}
-  \dv{P}{t} = bP\,\ln\frac{M}{P}, \qquad P(0)=P_0>0,
+  \dv{P}{t} = b\,\bigl(\ln M-\ln P\bigr)\,P, \qquad P(0)=P_0>0,
   \label{eq:gompertz}
 \end{equation}
-con $b>0$ y $M>0$ la capacidad de carga.
+con $b>0$ y $M>0$ la población máxima sostenible.
 \end{definicion}
 
-Con $z=\ln P$ se obtiene $\dot z = b(\ln M - z)$, que es lineal. Su solución es $z=\ln M + \ln(P_0/M)\,\ee^{-bt}$, y por tanto
+\begin{proposition}[solución de Gompertz]\label{prop:gompertz}
+La solución de \eqref{eq:gompertz} es
 \begin{equation}
-  P(t) = M\exp\!\Bigl[\ln\frac{P_0}{M}\,\ee^{-bt}\Bigr].
+  P(t) = M\exp\!\Bigl[\ln\frac{P_0}{M}\,\ee^{-bt}\Bigr],
   \label{eq:gompertz-sol}
 \end{equation}
+y $P(t)\to M$ cuando $t\to\infty$.
+\end{proposition}
+
+\begin{proof}
+Con $z=\ln P$ (es decir, $P=\ee^{z}$) se tiene $\ee^{z}\dot z = b(\ln M - z)\,\ee^{z}$, luego
+\[
+  \dot z + b\,z = b\ln M,
+\]
+ecuación lineal. La solución particular es $z_p=\ln M$ y la homogénea es $z_h=c\,\ee^{-bt}$, de modo que $z=\ln M + c\,\ee^{-bt}$. La condición $\ln P(0)=\ln P_0$ da $c=\ln P_0-\ln M=\ln(P_0/M)$. Equivalentemente,
+$\ln(P/M)=\ln(P_0/M)\,\ee^{-bt}$, y $\ln(M/P)=\ln(M/P_0)\,\ee^{-bt}$. Deshaciendo el cambio se obtiene \eqref{eq:gompertz-sol}. Para $t=0$ se tiene $P=P_0$ y para $t\to\infty$, $P=M$.
+\end{proof}
 
 \begin{lemma}[punto de inflexión]\label{lem:gompertz}
-Si $P_0<M/\ee$, la solución \eqref{eq:gompertz-sol} tiene un único punto de inflexión, en $P=M/\ee$.
+Si $P_0<M/\ee$, la solución \eqref{eq:gompertz-sol} tiene un único punto de inflexión, en $P_i=M/\ee$, que corresponde al instante $t_i$ tal que $\ee^{bt_i}=\ln(M/P_0)$.
 \end{lemma}
 
 \begin{proof}
@@ -104,83 +131,240 @@ Derivando \eqref{eq:gompertz},
 \[
   \ddot P = b\dot P\ln\frac{M}{P} - b\dot P = b\,\dot P\Bigl(\ln\frac{M}{P}-1\Bigr).
 \]
-Como $\dot P>0$ para $0<P<M$, $\ddot P=0$ si y solo si $\ln(M/P)=1$, es decir, $P=M/\ee$.
+Como $\dot P>0$ para $0<P<M$, $\ddot P=0$ si y solo si $\ln(M/P)=1$, es decir, $P=M/\ee$. Con \eqref{eq:gompertz-sol}, $\ln(M/P)=\ln(M/P_0)\,\ee^{-bt}=1$ da el instante $t_i$.
 \end{proof}
 
-\begin{remark}
-En la logística la inflexión ocurre en $P=M/2$; en Gompertz, en $P=M/\ee\approx 0{,}37\,M$, de modo que el crecimiento es asimétrico respecto a la sigmoide logística. Este modelo se usa, por ejemplo, en el crecimiento tumoral.
+La población crece rápidamente hasta $P_i=M/\ee\approx 0{,}37\,M$ y, a partir de ese punto, atenúa el crecimiento. Al igual que en la logística, el sistema es autosostenible, pero el crecimiento deja de ser simétrico: el punto de inflexión aparece antes que en la logística ($M/2$). La derivada temporal $\dot P$ da la velocidad de crecimiento y presenta un máximo en el punto de inflexión.
+
+\begin{remark}[aplicaciones de la ley de Gompertz]\leavevmode
+\begin{itemize}
+  \item \emph{Adopción de tecnologías} (por ejemplo, teléfonos móviles): los costes iniciales son altos y la aceptación es lenta; sigue un periodo de crecimiento rápido y, por último, una disminución de la absorción cuando se alcanza la saturación.
+  \item \emph{Población en un espacio cerrado}: la tasa de natalidad aumenta y luego el crecimiento se ralentiza conforme se alcanza el límite de los recursos.
+  \item \emph{Crecimiento de tumores}.
+\end{itemize}
 \end{remark}
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}
-    \begin{axis}[informe, xmin=0, xmax=10, ymin=0, ymax=110,
-      xlabel={$t$}, ylabel={$P$},
-      legend style={at={(0.97,0.45)}}]
-      \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
-      \addplot[serie1, domain=0:10, samples=100] {100*exp(ln(0.03)*exp(-0.5*x))};
-      \addlegendentry{$P_0/M=0{,}03$}
-      \addplot[serie2, domain=0:10, samples=100] {100*exp(ln(0.2)*exp(-0.5*x))};
-      \addlegendentry{$P_0/M=0{,}2$}
-      \addplot[serie3, domain=0:10, samples=100] {100*exp(ln(0.5)*exp(-0.5*x))};
-      \addlegendentry{$P_0/M=0{,}5$}
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Soluciones de Gompertz con $M=100$, $b=0{,}5$.}
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=10, ymin=0, ymax=110,
+        xlabel={$t$}, ylabel={$P$}, legend style={at={(0.97,0.4)}}]
+        \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
+        \addplot[serie1, domain=0:10, samples=100] {100*exp(ln(0.03)*exp(-0.5*x))};
+        \addlegendentry{$P_0/M=\tfrac1{30}$}
+        \addplot[serie2, domain=0:10, samples=100] {100*exp(ln(0.2)*exp(-0.5*x))};
+        \addlegendentry{$P_0/M=\tfrac15$}
+        \addplot[serie3, domain=0:10, samples=100] {100*exp(ln(0.5)*exp(-0.5*x))};
+        \addlegendentry{$P_0/M=\tfrac12$}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Soluciones de Gompertz ($M=100$, $b=0{,}5$).}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=10, ymin=0, ymax=110,
+        xlabel={$t$}, ylabel={$P$}, legend style={at={(0.97,0.2)}, anchor=south east}]
+        \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
+        \addplot[serie1, domain=0:10, samples=100] {100*exp(ln(0.03)*exp(-0.5*x))};
+        \addlegendentry{Gompertz}
+        \addplot[serie2, domain=0:10, samples=100] {100/(1+(1/0.03-1)*exp(-0.65*x))};
+        \addlegendentry{Logística}
+        \addplot[only marks, mark=*, mark size=1.6pt, color=azulOscuro, forget plot] coordinates {(2.35,36.79)};
+        \addplot[only marks, mark=square*, mark size=1.6pt, color=azulMedio, forget plot] coordinates {(5.38,50)};
+        \node[font=\scriptsize, anchor=east, text=azulOscuro] at (axis cs:2.2,45) {$M/\ee$};
+        \node[font=\scriptsize, anchor=west, text=azulMedio] at (axis cs:5.6,42) {$M/2$};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Comparación con la logística; se indican los puntos de inflexión.}
+  \end{subfigure}
+  \caption{Ley de Gompertz. Las trayectorias convergen a $M$; la inflexión ocurre en $P=M/\ee$ (Gompertz) frente a $P=M/2$ (logística).}
   \label{fig:gompertz}
 \end{figure}
 
 \subsection{Curvas de infección SIS}
 
-En el modelo SIS, una población de tamaño fijo $N$ se divide en susceptibles $S(t)$ e infectados $I(t)$, y los infectados que se recuperan vuelven a ser susceptibles.
+Sea $N$ el número de individuos de una población, dividida en susceptibles $S(t)$ (que pueden contraer la infección) e infectados $I(t)$. Los infectados se recuperan y vuelven a ser susceptibles: no hay inmunidad permanente.
 
 \begin{modelo}[SIS]
 \begin{equation}
   \dot S = -\beta SI + \gamma I, \qquad \dot I = \beta SI - \gamma I,
   \label{eq:sis}
 \end{equation}
-con $\beta>0$ la tasa de contagio y $\gamma>0$ la tasa de recuperación. Se cumple $\dot S+\dot I=0$, luego $S+I=N$.
+con $\beta>0$ la tasa de contagio (número de personas a las que puede infectar cada infectado, por unidad de tiempo) y $\gamma>0$ la tasa de recuperación; $1/\gamma$ es el periodo medio de infección. Se cumple $\dot S+\dot I=0$, luego $S+I=N$.
 \end{modelo}
 
-Sustituyendo $S=N-I$ se obtiene una única ecuación de Bernoulli con $n=2$:
+Sustituyendo $S=N-I$ el sistema se reduce a una única ecuación de Riccati (de nuevo con $I\equiv 0$ como solución):
 \begin{equation}
-  \dot I = (\beta N-\gamma)\,I - \beta I^2, \qquad I(0)=I_0\in(0,N].
+  \dot I = \bigl[\beta(N-I)-\gamma\bigr]I = (\beta N-\gamma)\,I - \beta I^2, \qquad I(0)=I_0.
   \label{eq:sis-I}
 \end{equation}
-Se define el número reproductivo básico $R_0=\beta N/\gamma$ y $k = N-\gamma/\beta$, de modo que $\beta N-\gamma=\beta k$.
+Se define $k = N-\gamma/\beta$, de modo que $\beta N-\gamma=\beta k$, y el \emph{número reproductivo básico} $R_0=\beta N/\gamma$, que cumple $R_0>1\iff k>0$.
 
 \begin{theorem}[curva de infección SIS]\label{thm:sis}
-Para $k\neq 0$, la solución de \eqref{eq:sis-I} es
+Sea $I_0\in(0,N]$. Para $k\neq 0$, la solución de \eqref{eq:sis-I} es
 \begin{equation}
   I(t)=\frac{k}{1+\Bigl(\dfrac{k}{I_0}-1\Bigr)\ee^{-\beta k t}}.
   \label{eq:sis-sol}
 \end{equation}
-Si $R_0>1$ (es decir, $k>0$), $I(t)\to k$; si $R_0<1$ ($k<0$), $I(t)\to 0$. Si $R_0=1$, $I(t)=I_0/(1+\beta I_0 t)\to 0$.
+Si $R_0>1$ ($k>0$), $I(t)\to k$ cuando $t\to\infty$, con $k$ independiente de $I_0$; si $R_0<1$ ($k<0$), $I(t)\to 0$. Si $R_0=1$, $I(t)=I_0/(1+\beta I_0 t)\to 0$.
 \end{theorem}
 
 \begin{proof}
-Con $z=1/I$, la ecuación \eqref{eq:sis-I} se reduce a $\dot z+\beta k\,z=\beta$. La solución es $z=\tfrac1k+C\,\ee^{-\beta kt}$, y $z(0)=1/I_0$ da $C=\tfrac1{I_0}-\tfrac1k$. Invirtiendo, $I=1/z$ coincide con \eqref{eq:sis-sol}. El comportamiento asintótico se sigue del signo de $k$ en el exponente. Para $k=0$, $\dot z=\beta$ y $z=1/I_0+\beta t$.
+Con $I=1/z$ se obtiene
+\[
+  -\frac{1}{z^2}\dot z=\frac{\beta N-\gamma}{z}-\frac{\beta}{z^2}
+  \quad\Longrightarrow\quad
+  \dot z+\beta k\,z=\beta .
+\]
+La solución particular es $z_p=1/k$ y la homogénea es $c\,\ee^{-\beta kt}$: $z=\tfrac1k+c\,\ee^{-\beta kt}$. Para $t=0$, $\tfrac1{I_0}=\tfrac1k+c$, luego $c=\tfrac1{I_0}-\tfrac1k=\tfrac{k-I_0}{kI_0}$. Invirtiendo, $I=1/z=k/\bigl(1+kc\,\ee^{-\beta kt}\bigr)$, que es \eqref{eq:sis-sol}. El comportamiento asintótico se sigue del signo de $k$ en el exponente. Para $k=0$, $\dot z=\beta$ y $z=1/I_0+\beta t$.
 \end{proof}
 
 \begin{remark}
-El umbral $R_0=1$ separa dos regímenes: la enfermedad persiste con $I_\infty=N(1-1/R_0)$ si $R_0>1$ y se extingue si $R_0\le1$.
+Si $0<I_0<k$ la curva crece hasta $k$; si $I_0>k>0$ decrece hasta $k$. El caso de interés epidemiológico es $0<I_0<k$ (un pequeño inóculo en una población con $R_0>1$). El valor $k=N-\gamma/\beta$ es el número de infectados que persisten una vez alcanzado el régimen estacionario (endémico).
+\end{remark}
+
+La derivada $\dot I=\beta I(k-I)$ es la velocidad con la que se propaga la epidemia. Alcanza su máximo cuando $I=k/2$.
+
+\begin{proposition}[pico de la velocidad de propagación]\label{prop:pico}
+Si $0<I_0<k/2$, la velocidad $\dot I(t)$ es máxima en
+\begin{equation}
+  t^\ast=\frac{1}{k\beta}\,\ln\!\Bigl(\frac{k}{I_0}-1\Bigr).
+  \label{eq:sis-pico}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+$\ddot I=\beta(k-2I)\dot I$ se anula si $I=k/2$. De \eqref{eq:sis-sol}, $I(t^\ast)=k/2$ equivale a $\bigl(\tfrac{k}{I_0}-1\bigr)\ee^{-\beta kt^\ast}=1$, que da \eqref{eq:sis-pico}. Si $I_0\ge k/2$, $\dot I$ es decreciente desde $t=0$.
+\end{proof}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.6cm, xmin=0, xmax=2, ymin=0, ymax=2,
+        xlabel={$t$}, ylabel={$I,\ S$}, legend columns=3, legend style={at={(0.5,1.04)}, anchor=south, /tikz/every even column/.append style={column sep=4pt}},
+        declare function={ sisI(\t,\i)=1.7/(1+(1.7/\i-1)*exp(-1.7*\t)); }]
+        \addplot[asintota, forget plot, domain=0:2, samples=2] {1.7};
+        \addplot[serie1, domain=0:2, samples=80] {sisI(x,0.5)};
+        \addlegendentry{$I_0=\tfrac12$}
+        \addplot[serie2, domain=0:2, samples=80] {sisI(x,1)};
+        \addlegendentry{$I_0=1$}
+        \addplot[serie3, domain=0:2, samples=80] {sisI(x,1.5)};
+        \addlegendentry{$I_0=\tfrac32$}
+        \addplot[serie1, forget plot, domain=0:2, samples=80] {2-sisI(x,0.5)};
+        \addplot[serie2, forget plot, domain=0:2, samples=80] {2-sisI(x,1)};
+        \addplot[serie3, forget plot, domain=0:2, samples=80] {2-sisI(x,1.5)};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Infectados $I(t)$ (crecientes) y susceptibles $S=N-I$ (decrecientes).}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5.6cm, xmin=0, xmax=2, ymin=0, ymax=0.8,
+        xlabel={$t$}, ylabel={$\dot I$}, legend columns=3, legend style={at={(0.5,1.04)}, anchor=south, /tikz/every even column/.append style={column sep=4pt}},
+        declare function={ sisI(\t,\i)=1.7/(1+(1.7/\i-1)*exp(-1.7*\t)); }]
+        \addplot[serie1, domain=0:2, samples=80] {sisI(x,0.5)*(1.7-sisI(x,0.5))};
+        \addlegendentry{$I_0=\tfrac12$}
+        \addplot[serie2, domain=0:2, samples=80] {sisI(x,1)*(1.7-sisI(x,1))};
+        \addlegendentry{$I_0=1$}
+        \addplot[serie3, domain=0:2, samples=80] {sisI(x,1.5)*(1.7-sisI(x,1.5))};
+        \addlegendentry{$I_0=\tfrac32$}
+        \addplot[only marks, mark=*, mark size=1.6pt, color=azulOscuro, forget plot] coordinates {(0.515,0.7225)};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Velocidad de propagación $\dot I$; el pico para $I_0=\tfrac12$ se da en $t^\ast$.}
+  \end{subfigure}
+  \caption{Modelo SIS con $N=2$, $\beta=1$, $\gamma=0{,}3$ (de modo que $k=1{,}7$). El valor $k$ es independiente de $I_0$.}
+  \label{fig:sis}
+\end{figure}
+
+\subsection{Extensión: modelo SIR}
+
+En una enfermedad con inmunidad, o con mortalidad, hay que contar una variable más (por ejemplo, los recuperados o fallecidos), lo que exige modelos con más compartimentos. El más sencillo es el modelo SIR:
+\begin{equation}
+  \dot S=-\beta SI,\qquad \dot I=\beta SI-\gamma I,\qquad \dot R=\gamma I,
+  \label{eq:sir}
+\end{equation}
+con $S+I+R=N$ y $R_0=\beta N/\gamma$. Aquí $R(t)$ son los individuos retirados (recuperados inmunes o fallecidos).
+
+\begin{proposition}[integral primera del modelo SIR]\label{prop:sir}
+Las trayectorias en el plano de fases $(S,I)$ verifican
+\begin{equation}
+  I + S - \frac{\gamma}{\beta}\ln S = I_0 + S_0 - \frac{\gamma}{\beta}\ln S_0 ,
+  \label{eq:sir-fase}
+\end{equation}
+y el número de infectados es máximo cuando $S=\gamma/\beta=N/R_0$. Si $R_0>1$ y $I_0\ll N$, el valor máximo es
+\begin{equation}
+  I_{\mathrm{max}}\simeq N\Bigl[1-\frac{1+\ln R_0}{R_0}\Bigr].
+  \label{eq:sir-max}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+De \eqref{eq:sir}, $\dv{I}{S}=-1+\dfrac{\gamma}{\beta S}$, que es separable y da \eqref{eq:sir-fase}. El máximo de $I$ ocurre cuando $\dot I=0$ con $I>0$, es decir, $S=\gamma/\beta$. Sustituyendo en \eqref{eq:sir-fase} con $S_0\simeq N$ e $I_0\simeq 0$ se obtiene \eqref{eq:sir-max}.
+\end{proof}
+
+\begin{remark}
+Para $R_0=4$ y $N=10^4$ resulta $I_{\mathrm{max}}\simeq 4034$ personas, en $S=N/R_0=2500$. Además, la epidemia termina con un número de susceptibles $S_\infty>0$ que no se contagian (aquí $S_\infty\simeq 198$): la enfermedad se extingue por falta de infectados, no de susceptibles.
 \end{remark}
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}
-    \begin{axis}[informe, xmin=0, xmax=30, ymin=0, ymax=1,
-      xlabel={$t$}, ylabel={$I/N$},
-      legend style={at={(0.97,0.5)}}]
-      % N=1, gamma=0.2: R0=3 (beta=0.6, k=2/3), R0=1.5 (beta=0.3, k=1/3), R0=0.8 (beta=0.16, k=-0.25)
-      \addplot[serie1, domain=0:30, samples=100] {(2/3)/(1+((2/3)/0.05-1)*exp(-0.6*(2/3)*x))};
-      \addlegendentry{$R_0=3$}
-      \addplot[serie2, domain=0:30, samples=100] {(1/3)/(1+((1/3)/0.05-1)*exp(-0.3*(1/3)*x))};
-      \addlegendentry{$R_0=1{,}5$}
-      \addplot[serie3, domain=0:30, samples=100] {(-0.25)/(1+((-0.25)/0.3-1)*exp(0.16*0.25*x))};
-      \addlegendentry{$R_0=0{,}8$}
-    \end{axis}
-  \end{tikzpicture}
-  \caption{Curvas SIS con $\gamma=0{,}2$, $N=1$. Con $R_0>1$ la fracción de infectados tiende a $1-1/R_0$; con $R_0<1$ se extingue.}
-  \label{fig:sis}
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5cm, xmin=0, xmax=200, ymin=0, ymax=10500,
+        xlabel={$t$}, ylabel={Personas}, scaled ticks=false, legend style={at={(0.97,0.5)}}]
+        \addplot[serie1] table[x=t,y=S]{figuras/datos/sir_tiempo.dat};
+        \addlegendentry{$S$}
+        \addplot[serie4] table[x=t,y=I]{figuras/datos/sir_tiempo.dat};
+        \addlegendentry{$I$}
+        \addplot[serie3] table[x=t,y=R]{figuras/datos/sir_tiempo.dat};
+        \addlegendentry{$R$}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Evolución temporal ($R_0=4$).}
+  \end{subfigure}\hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=5cm, xmin=0, xmax=200, ymin=0, ymax=4400,
+        xlabel={$t$}, ylabel={$I$}, scaled ticks=false, legend style={at={(0.97,0.7)}}]
+        \addplot[serie3] table[x=t,y=I]{figuras/datos/sir_R0_0_8.dat};
+        \addlegendentry{$R_0=0{,}8$}
+        \addplot[serie2] table[x=t,y=I]{figuras/datos/sir_R0_1_5.dat};
+        \addlegendentry{$R_0=1{,}5$}
+        \addplot[serie4] table[x=t,y=I]{figuras/datos/sir_R0_2_5.dat};
+        \addlegendentry{$R_0=2{,}5$}
+        \addplot[serie1] table[x=t,y=I]{figuras/datos/sir_R0_4_0.dat};
+        \addlegendentry{$R_0=4$}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Comparación de $R_0$ ($\gamma=0{,}1$).}
+  \end{subfigure}
+
+  \medskip
+  \begin{subfigure}[t]{0.78\linewidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[informe, width=\linewidth, height=6.4cm, xmin=-300, xmax=10300, ymin=-300, ymax=10300,
+        xlabel={$S$ (susceptibles)}, ylabel={$I$ (infectados)}, scaled ticks=false]
+        \addplot[fill=grisClaro, draw=none, opacity=0.6] coordinates {(0,10000) (10000,10000) (10000,0)} -- cycle;
+        \addplot[quiver={u=\thisrow{u},v=\thisrow{v},scale arrows=380},
+                 -{Stealth[length=3pt]}, color=azulClaro, forget plot]
+          table[x=S,y=I]{figuras/datos/sir_campo.dat};
+        \addplot[serie1, line width=1.5pt] table[x=S,y=I]{figuras/datos/sir_fase.dat};
+        \node[font=\scriptsize, text=gris] at (axis cs:7300,8000) {$S+I>N$};
+        \node[font=\scriptsize, text=azulOscuro, anchor=south, fill=white, inner sep=1pt] at (axis cs:2500,4150) {$I_{\mathrm{max}}$};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Plano de fases $(S,I)$ ($R_0=4$): campo de direcciones y trayectoria. La zona gris, $S+I>N$, es inaccesible.}
+  \end{subfigure}
+  \caption{Modelo SIR para una pandemia con $N=10^4$, $\gamma=0{,}1$ e $I_0=1$.}
+  \label{fig:sir}
 \end{figure}
