@@ -1,0 +1,498 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+% --- FUENTES ---
+\usepackage[T1]{fontenc}      
+\usepackage{lmodern}          
+% -----------------------------
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{enumitem}     
+\usepackage{titlesec}     
+\usepackage{xcolor}       
+\usepackage{booktabs}
+\newcommand{\Id}{\mathrm{Id}}
+\usepackage{centernot}
+
+\DeclareMathOperator{\Hom}{Hom} 
+
+% --- DISEÑO Y GRÁFICOS ---
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{float}  
+\usepackage[table]{xcolor}
+\usepackage{tikz}      
+\usetikzlibrary{babel, arrows.meta, calc, positioning, 3d, decorations.markings, patterns, shadings, angles, quotes, matrix, bending}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, theorems}
+\usepackage{array}
+\usepackage{multirow}
+
+% --- FORMATO DE TÍTULOS DE SECCIÓN ---
+\titleformat{\section}[block]{\Large\bfseries\scshape}{\thesection.}{0.5em}{}
+\titleformat{\subsection}[block]{\large\bfseries}{\thesubsection.}{0.5em}{}
+
+% --- ENTORNOS TIPO TEOREMA (ESTILO ACADÉMICO MINIMALISTA) ---
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[section]
+\newtheorem{example}{Ejemplo}[section]
+\newtheorem{exercise}{Ejercicio}[section]
+\newtheorem{remark}{Observación}[section]
+
+\theoremstyle{plain}
+\newtheorem{proposition}{Proposición}[section]
+\newtheorem{corollary}{Corolario}[section]
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lemma}{Lema}[section]
+
+% --- CONFIGURACIÓN TCOLORBOX PARA ENTORNOS FORMALES ---
+% Definiciones: fondo muy sutil, recuadro minimalista
+\tcolorboxenvironment{definition}{
+    enhanced, breakable,
+    colback=blue!2!white, colframe=blue!20!white,
+    boxrule=0.5pt, arc=0pt, outer arc=0pt,
+    left=10pt, right=10pt, top=8pt, bottom=8pt,
+    before skip=12pt, after skip=12pt
+}
+
+% Teoremas y proposiciones: estilo "paper", sin fondo, con línea lateral azulada
+\tcolorboxenvironment{theorem}{
+    blanker, breakable,
+    left=12pt,
+    before skip=12pt, after skip=12pt,
+    borderline west={2pt}{0pt}{blue!60!black}
+}
+\tcolorboxenvironment{proposition}{
+    blanker, breakable,
+    left=12pt,
+    before skip=12pt, after skip=12pt,
+    borderline west={2pt}{0pt}{blue!60!black}
+}
+\tcolorboxenvironment{lemma}{
+    blanker, breakable,
+    left=12pt,
+    before skip=12pt, after skip=12pt,
+    borderline west={2pt}{0pt}{blue!60!black}
+}
+\tcolorboxenvironment{corollary}{
+    blanker, breakable,
+    left=12pt,
+    before skip=12pt, after skip=12pt,
+    borderline west={2pt}{0pt}{blue!60!black}
+}
+
+% Observaciones y ejemplos: línea lateral gris tenue
+\tcolorboxenvironment{remark}{
+    blanker, breakable,
+    left=12pt,
+    before skip=12pt, after skip=12pt,
+    borderline west={2pt}{0pt}{gray!40}
+}
+\tcolorboxenvironment{example}{
+    blanker, breakable,
+    left=12pt,
+    before skip=12pt, after skip=12pt,
+    borderline west={2pt}{0pt}{gray!40}
+}
+
+% Demostraciones: formato estándar AMS con margen ligeramente ajustado
+\tcolorboxenvironment{proof}{
+    blanker, breakable,
+    left=12pt,
+    before skip=12pt, after skip=12pt,
+    borderline west={1.5pt}{0pt}{black!20}
+}
+
+% --- ESTILOS SOBRIOS PARA LOS DIAGRAMAS DE EJERCICIO ---
+\tcbset{
+    caja_ejercicio/.style={
+        blanker, breakable,
+        left=12pt,
+        before skip=14pt, after skip=14pt,
+        borderline west={2pt}{0pt}{cyan!70!black}
+    }
+}
+
+% --- CONFIGURACIÓN DE ÍNDICE INTERACTIVO ---
+\usepackage[hidelinks]{hyperref}
+\usepackage{tocloft} 
+\renewcommand{\cfttoctitlefont}{\hfill\Large\scshape} 
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftsecleader}{\hfill} 
+\renewcommand{\cftsecfont}{\normalfont} 
+\renewcommand{\cftsecpagefont}{\normalfont} 
+\setcounter{tocdepth}{2} 
+
+\renewcommand{\baselinestretch}{1.15}
+
+\begin{document}
+
+% ==========================================
+% CABECERA
+% ==========================================
+\noindent
+\begin{minipage}[c]{0.4\textwidth}
+\includegraphics[width=0.7\linewidth]{Logo USAL.png} 
+\end{minipage}
+\hfill 
+\begin{minipage}[c]{0.55\textwidth}
+    \raggedleft 
+    {\large \textbf{\textsc{Ecuaciones Diferenciales}}} \\[0.1cm]
+    \small Autor: Daniel Martín Guerrero \\
+    Grado en Física (curso 2026-2027) \\
+    Facultad de Ciencias
+\end{minipage}
+
+\vspace{0.4cm}
+\hrule height 0.6pt 
+\vspace{0.4cm}
+
+% ==========================================
+% TÍTULO DEL TEMA
+% ==========================================
+\begin{center}
+    \Large \textbf{Tema 2: Aplicaciones de ODE de primer orden a modelos sencillos}
+\end{center}
+
+\vspace{0.6cm}
+
+% ==========================================
+% ÍNDICE INTERACTIVO
+% ==========================================
+\tableofcontents
+
+\vspace{1cm}
+
+\section{Ley de Newton del enfriamiento}
+
+El estudio de la transferencia térmica en sistemas macroscópicos simples constituye una de las aplicaciones fundamentales de las ecuaciones diferenciales ordinarias de primer orden. La ley empírica formulada por Isaac Newton establece que la tasa de pérdida de calor de un cuerpo es proporcional a la diferencia de temperatura entre el cuerpo y su entorno, asumiendo que dicha diferencia no es excesivamente grande y que los efectos de convección priman sobre los de radiación térmica.
+
+\begin{definition}[Ecuación del enfriamiento de Newton]
+Sea $T(t)$ la temperatura de un objeto en el instante $t$ y $S(t)$ la temperatura del ambiente circundante. La ley de Newton del enfriamiento se formula matemáticamente como el siguiente problema de valor inicial:
+\begin{equation}
+    \frac{dT}{dt} = -k(T - S), \quad T(0) = T_0
+\end{equation}
+donde $k > 0$ es una constante característica del objeto (dependiente de su geometría, masa y capacidad calorífica) con dimensiones de frecuencia $[T^{-1}]$, y $T_0$ es la temperatura inicial.
+\end{definition}
+
+\begin{remark}
+El signo negativo en la ecuación diferencial garantiza el cumplimiento del segundo principio de la termodinámica. Si $T > S$, la derivada $dT/dt$ resulta negativa, implicando que el objeto se enfría. Inversamente, si $T < S$, el objeto se calienta.
+\end{remark}
+
+Bajo la suposición de que el ambiente actúa como un foco térmico ideal de capacidad calorífica infinita, su temperatura permanece invariante en el tiempo, $S(t) = S_0$. En este régimen estacionario para el entorno, la ecuación se simplifica a una ecuación diferencial ordinaria lineal de primer orden y coeficientes constantes:
+\begin{equation}
+    \frac{dT}{dt} + kT = kS_0
+\end{equation}
+
+La resolución analítica de esta ecuación puede abordarse mediante el método del factor integrante o evaluando la solución homogénea y particular.
+
+\begin{proposition}[Solución analítica]
+La evolución temporal de la temperatura de un objeto inmerso en un sumidero térmico a temperatura constante $S_0$ obedece rigurosamente a un decaimiento exponencial dictado por la expresión:
+\begin{equation}
+    T(t) = S_0 + (T_0 - S_0)e^{-kt}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Consideramos la ecuación homogénea asociada $\frac{dT}{dt} + kT = 0$, cuya integración elemental rinde $T_h(t) = C e^{-kt}$. La solución particular de la ecuación completa, por simple inspección del estado estacionario (donde $dT/dt \to 0$), es la isoterma $T_p(t) = S_0$. 
+
+En virtud del principio de superposición de los operadores lineales, la solución general cristaliza como la adición de ambas componentes:
+\begin{equation*}
+    T(t) = S_0 + C e^{-kt}
+\end{equation*}
+Imponiendo la condición de Cauchy $T(0) = T_0$, determinamos unívocamente la constante de integración $C$:
+\begin{equation*}
+    T_0 = S_0 + C \implies C = T_0 - S_0
+\end{equation*}
+Por consiguiente, $T(t) = S_0 + (T_0 - S_0)e^{-kt}$. Independientemente de la divergencia inicial, en el límite termodinámico asintótico ($t \to \infty$), el término transitorio decae y se alcanza el equilibrio térmico: $\lim_{t \to \infty} T(t) = S_0$.
+\end{proof}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=12cm, height=7.5cm,
+            axis lines=middle,
+            xmin=0, xmax=120,
+            ymin=0, ymax=120,
+            xlabel={Tiempo $t$}, ylabel={Temperatura $T$},
+            ticklabel style={font=\footnotesize},
+            grid=major,
+            grid style={dashed, gray!30},
+            enlargelimits=false,
+            clip=true,
+            legend pos=north east,
+            legend style={nodes={scale=0.9, transform shape}, draw=gray!50},
+            declare function={
+                enfriamiento(\t) = 20 + (110 - 20)*exp(-0.04*\t);
+                calentamiento(\t) = 20 + (5 - 20)*exp(-0.04*\t);
+            }
+        ]
+        
+        % Asintota (Temperatura ambiente S_0)
+        \addplot[domain=0:120, samples=2, color=black!80, thick] {20} node[pos=0.85, above] {$S_0$};
+        
+        % Curva de enfriamiento
+        \addplot[domain=0:120, samples=100, color=blue!80!black, ultra thick] {enfriamiento(x)};
+        \addlegendentry{Enfriamiento ($T_0 > S_0$)}
+        
+        % Curva de calentamiento
+        \addplot[domain=0:120, samples=100, color=red!70!black, ultra thick] {calentamiento(x)};
+        \addlegendentry{Calentamiento ($T_0 < S_0$)}
+
+        % Marcas iniciales
+        \node[label={180:{$T_0$ (enfriamiento)}},circle,fill,inner sep=1.5pt] at (axis cs:0,110) {};
+        \node[label={180:{$T_0$ (calentamiento)}},circle,fill,inner sep=1.5pt] at (axis cs:0,5) {};
+
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Evolución termodinámica modelada por la ley de Newton del enfriamiento. Independientemente del estado térmico inicial del cuerpo, la temperatura converge asintóticamente hacia la invariante ambiental $S_0$.}
+\end{figure}
+
+\newpage
+
+\section{Dinámica de poblaciones}
+
+El aparato analítico de las ecuaciones diferenciales permite formular la fenomenología del crecimiento de grupos biológicos en ecosistemas acotados. La complejidad de estos modelos radica en las interacciones sistémicas dependientes de la densidad, que se incorporan secuencialmente a través de correcciones no lineales a la formulación básica.
+
+\subsection{El modelo de Malthus}
+
+El paradigma fundacional en demografía cuantitativa fue establecido empíricamente por el clérigo y erudito Thomas Robert Malthus (1798).
+
+\begin{definition}[Ecuación malthusiana]
+Dada una población $P(t)$ con un contingente inicial $P(0) = P_0$, el modelo asume que el cambio demográfico neto es estrictamente proporcional al volumen de la población en cada instante:
+\begin{equation}
+    \frac{dP}{dt} = kP
+\end{equation}
+\end{definition}
+
+En esta estructura lineal, el parámetro intrínseco de crecimiento $k$ define la diferencia ponderada entre la tasa de natalidad y la tasa de mortalidad del colectivo. Al separar variables e integrar ($\int dP/P = \int k \,dt$), se deduce la integral general:
+\begin{equation}
+    P(t) = P_0 e^{kt}
+\end{equation}
+
+Topológicamente, el signo del parámetro bifurca el sistema en dos regímenes estrictos:
+\begin{itemize}
+    \item Si $k > 0$, la dinámica describe una \textit{explosión demográfica} exponencial, la cual colapsa frente al escrutinio físico ya que los recursos planetarios resultan finitos.
+    \item Si $k < 0$, el modelo describe un colectivo incapaz de sustituir sus pérdidas, experimentando una extinción exponencial o \textit{aniquilación}.
+\end{itemize}
+
+\subsection{El modelo logístico}
+
+Para paliar la divergencia asintótica del modelo de Malthus y dotar a la dinámica de sentido ecológico, Pierre François Verhulst (1838) incorporó una perturbación cuadrática que modela la competencia intraespecífica por recursos limitados.
+
+\begin{definition}[Ecuación logística]
+Se introduce el parámetro $M$, denotado formalmente como la \textit{capacidad de carga} del ecosistema (el máximo contingente poblacional sostenible). La ODE se formula como:
+\begin{equation}
+    \frac{dP}{dt} = r \left( 1 - \frac{P}{M} \right) P = rP - \frac{r}{M}P^2
+\end{equation}
+donde $r$ es la tasa de crecimiento intrínseco a baja densidad demográfica.
+\end{definition}
+
+Esta estructura corresponde analíticamente a una \textbf{ecuación de Riccati} carente de término independiente (también clasificable como una ecuación de Bernoulli con exponente nulo para el término lineal). Su resolución se torna rigurosa empleando el difeomorfismo $z(t) = 1/P(t)$.
+
+\begin{proposition}[Solución analítica del modelo logístico]
+La solución general al problema de valor inicial logístico $P(0) = P_0$ converge asintóticamente a la capacidad de carga y viene dada por:
+\begin{equation}
+    P(t) = \frac{M P_0}{P_0 + (M - P_0)e^{-rt}}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Evaluamos la derivada temporal del cambio de variable $z = 1/P$, obteniendo $z' = -P'/P^2$. Introduciendo esta relación diferencial en la estructura paramétrica original:
+\begin{equation*}
+    \frac{dP}{dt} = rMP - rP^2 \implies -\frac{z'}{z^2} = r\left(\frac{1}{z}\right) - \frac{r}{M}\left(\frac{1}{z^2}\right)
+\end{equation*}
+Multiplicando la ecuación íntegramente por $-z^2$, la ODE de Riccati se linealiza de forma inmaculada:
+\begin{equation*}
+    \frac{dz}{dt} + rz = \frac{r}{M}
+\end{equation*}
+La solución de esta ecuación lineal de primer orden rinde $z(t) = 1/M + C_0 e^{-rt}$. Evaluando las condiciones de Cauchy para $t=0$, extraemos que $1/P_0 = 1/M + C_0 \implies C_0 = \frac{M - P_0}{M P_0}$. 
+Invirtiendo el difeomorfismo para restituir la magnitud física $P(t) = 1/z(t)$:
+\begin{equation*}
+    P(t) = \frac{1}{\frac{1}{M} + \left( \frac{M - P_0}{M P_0} \right) e^{-rt}} = \frac{M P_0}{P_0 + (M - P_0)e^{-rt}}
+\end{equation*}
+La resolución verifica analíticamente que $\lim_{t \to \infty} P(t) = M$, independientemente de si el estrato demográfico inicial excede o subyace a dicha capacidad.
+\end{proof}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=12cm, height=7cm,
+            axis lines=middle,
+            xmin=0, xmax=10,
+            ymin=0, ymax=180,
+            xlabel={Tiempo $t$}, ylabel={Población $P$},
+            ticklabel style={font=\footnotesize},
+            grid=major,
+            grid style={dashed, gray!30},
+            enlargelimits=false,
+            clip=true,
+            legend pos=south east,
+            legend style={nodes={scale=0.9, transform shape}},
+            declare function={
+                logistica1(\t) = (100 * 10) / (10 + (100 - 10)*exp(-0.8*\t));
+                logistica2(\t) = (100 * 160) / (160 + (100 - 160)*exp(-0.8*\t));
+            }
+        ]
+        
+        % Asintota (Capacidad de carga M)
+        \addplot[domain=0:10, samples=2, color=black!80, thick] {100} node[pos=0.05, above] {$M$};
+        
+        % Crecimiento sigmoideo (P0 < M)
+        \addplot[domain=0:10, samples=100, color=red!70!black, ultra thick] {logistica1(x)};
+        \addlegendentry{$P_0 < M$}
+        
+        % Decrecimiento (P0 > M)
+        \addplot[domain=0:10, samples=100, color=blue!80!black, ultra thick] {logistica2(x)};
+        \addlegendentry{$P_0 > M$}
+        
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Trayectorias integrales del ecosistema logístico. Las poblaciones iniciales inferiores a $M$ experimentan un crecimiento sigmoideo (trazado rojo), mientras que las sobresaturaciones decaen monótonamente (trazado azul) bajo la escasez de recursos ecológicos.}
+\end{figure}
+
+\subsection{La ley de Gompertz}
+
+Diseñado originariamente en el entorno actuarial para trazar tablas de mortalidad (1825), el modelo de Gompertz articula un retardo asimétrico en la convergencia poblacional respecto a la isoterma logística. En este marco teórico, el factor de amortiguación o fricción demográfica no opera linealmente, sino que escala de forma logarítmica respecto a los recursos disponibles.
+
+\begin{definition}[Ecuación diferencial de Gompertz]
+Se asume que la variación demográfica se adapta a la ley:
+\begin{equation}
+    \frac{dP}{dt} = b(\ln M - \ln P)P
+\end{equation}
+donde $b > 0$ modula la tasa de absorción de recursos y $M$ persevera como el umbral máximo de sostenibilidad poblacional.
+\end{definition}
+
+Para erradicar la trascendencia logarítmica de la derivada e inscribir el problema en el terreno algebraico lineal, implementamos el cambio de variable formal $z(t) = \ln P(t)$. Aplicando la regla de la cadena:
+\begin{equation*}
+    \dot{z} = \frac{1}{P}\frac{dP}{dt} = b(\ln M - z)
+\end{equation*}
+
+Esta estructura constituye una rigurosa ecuación diferencial lineal en $z(t)$: $\dot{z} + bz = b\ln M$. Empleando el operador de factor integrante $e^{bt}$, extraemos su integral general analítica:
+\begin{equation}
+    z(t) = \ln M + c_0 e^{-bt}
+\end{equation}
+
+Forzando el cumplimiento de las condiciones primigenias en el instante originario, $\ln P(0) = \ln P_0$, obtenemos $c_0 = \ln(P_0/M)$. Revirtiendo las transformaciones de estado ($P = e^z$) alcanzamos la solución unívoca del sistema paramétrico:
+\begin{equation}
+    P(t) = M e^{\ln\left(\frac{P_0}{M}\right)e^{-bt}}
+\end{equation}
+
+\begin{lemma}[Punto de inflexión asimétrico]
+A diferencia del modelo logístico puro —cuyo punto de inflexión se sitúa rigurosamente en $P = M/2$—, el modelo asimétrico de Gompertz experimenta su atenuación cinemática crítica cuando el contingente alcanza exactamente la magnitud $P_i = M/e$.
+\end{lemma}
+
+\begin{proof}
+La atenuación crítica o punto de inflexión del crecimiento demográfico acontece cuando la aceleración de la población claudica, es decir, $d^2P/dt^2 = 0$. Derivando el flujo originario respecto al tiempo e implementando la regla del producto vectorial:
+\begin{align*}
+    \frac{d^2P}{dt^2} &= \frac{d}{dt} \left[ bP (\ln M - \ln P) \right] \\
+    &= b \frac{dP}{dt} (\ln M - \ln P) + bP \left(-\frac{1}{P}\frac{dP}{dt}\right) \\
+    &= b \frac{dP}{dt} (\ln M - \ln P - 1)
+\end{align*}
+Igualando a cero (y asumiendo una dinámica activa $dP/dt \neq 0$), cristalizamos la relación crítica:
+\begin{equation*}
+    \ln M - \ln P - 1 = 0 \implies \ln\left(\frac{M}{P}\right) = 1 \implies \frac{M}{P} = e \implies P_i = \frac{M}{e}
+\end{equation*}
+Quedando demostrado analíticamente que la desaceleración irrumpe de manera intrínseca al superarse aproximadamente el $36.8\%$ de la capacidad de carga estática del ecosistema.
+\end{proof}
+
+\begin{remark}
+El modelo de Gompertz goza de extraordinaria prevalencia en aplicaciones contemporáneas:
+\begin{itemize}
+    \item \textbf{Crecimiento de tumores oncológicos:} Describe con altísima precisión geométrica la cinética de replicación celular en entornos isquémicos con privación progresiva de nutrientes.
+    \item \textbf{Economía y marketing:} Tasa de adopción y obsolescencia para tecnologías disruptivas (p. ej., telefonía móvil), donde la penetración incipiente es lenta, explota en el tramo intermedio, y decae acusadamente ante la saturación de mercado.
+\end{itemize}
+\end{remark}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=12cm, height=7cm,
+            axis lines=middle,
+            xmin=0, xmax=10,
+            ymin=0, ymax=110,
+            xlabel={Tiempo $t$}, ylabel={Población $P$},
+            ticklabel style={font=\footnotesize},
+            grid=major,
+            grid style={dashed, gray!30},
+            enlargelimits=false,
+            clip=true,
+            legend pos=south east,
+            legend style={nodes={scale=0.9, transform shape}, cells={align=left}},
+            declare function={
+                % Gompertz: P(t) = M * exp( ln(P0/M) * exp(-b*t) )
+                % M = 100, b = 0.5
+                gompertz(\t,\p) = 100 * exp( ln(\p/100) * exp(-0.5*\t) );
+            }
+        ]
+        
+        \addplot[domain=0:10, samples=2, color=black!80, thick] {100};
+        
+        \addplot[domain=0:10, samples=100, color=blue!80!black, ultra thick] {gompertz(x,3.33)};
+        \addlegendentry{$P_0/M = 1/30$}
+        
+        \addplot[domain=0:10, samples=100, color=green!60!black, ultra thick] {gompertz(x,20)};
+        \addlegendentry{$P_0/M = 1/5$}
+        
+        \addplot[domain=0:10, samples=100, color=red!70!black, ultra thick] {gompertz(x,50)};
+        \addlegendentry{$P_0/M = 1/2$}
+        
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Cinética asimétrica modelada por la formulación de Gompertz. Las trayectorias exhiben una notable discrepancia topológica respecto a la logística pura, denotando una caída más abrupta del factor de crecimiento tras cruzar la inflexión $P = M/e$.}
+\end{figure}
+
+\subsection{Curvas de infección SIS}
+
+En el ámbito de la infectología teórica y la propagación de enfermedades no letales carentes de inmunidad adquirida permanente (p. ej., rinovirus o patógenos estacionales), se erigen los modelos compartimentales tipo SIS (Susceptible-Infectado-Susceptible).
+
+Sea un recinto epidemiológico acotado de $N$ individuos, particionado invariablemente en el tiempo en un estrato de susceptibles $S(t)$ (huéspedes potenciales sanos) y un estrato de infectados $I(t)$ (huéspedes vectores patógenos activos).
+
+El modelo analítico se rige por un sistema acoplado de ecuaciones diferenciales ordinarias no lineales:
+\begin{align}
+    \frac{dS}{dt} &= -\beta S I + \gamma I \\
+    \frac{dI}{dt} &= \beta S I - \gamma I
+\end{align}
+
+El parámetro transversal $\beta > 0$ es la constante de transmisibilidad o probabilidad efectiva de contagio por unidad de tiempo, y $\gamma > 0$ determina la tasa específica de recuperación clínica del patógeno.
+
+\begin{theorem}[Integración de la curva epidemiológica]
+Dado que el universo de pacientes es invariante ($N = S + I \implies S = N - I$), el sistema acoplado es analíticamente reducible a una única ODE de Riccati no autónoma. Si definimos la saturación viral $k = N - \gamma/\beta$, la dinámica del frente infeccioso $I(t)$ se estabiliza de la forma:
+\begin{equation}
+    I(t) = \frac{k}{1 + \left(\frac{k}{I_0} - 1\right) e^{-k\beta t}}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Sustituimos explícitamente $S(t) = N - I(t)$ en el operador diferencial de la población portadora:
+\begin{equation}
+    \frac{dI}{dt} = \beta(N - I)I - \gamma I = (\beta N - \gamma)I - \beta I^2
+\end{equation}
+
+Esta estructura obedece ineludiblemente a una ecuación de Bernoulli (Riccati sin grado nulo) resoluble mediante la inversión analítica de campo $z(t) = 1/I(t)$, la cual arrastra el diferencial escalar $dz/dt = -I'/I^2$.
+Despejando y linealizando los tensores, el problema colapsa a la topología:
+\begin{equation*}
+    \frac{dz}{dt} + (\beta N - \gamma)z = \beta
+\end{equation*}
+
+Para aligerar la notación, agrupamos los coeficientes directores bajo un mismo escalar de saturación $k\beta = \beta N - \gamma \implies k = N - \gamma/\beta$. Introduciendo este grado de libertad, la EDO rinde $\dot{z} + k\beta z = \beta$. 
+Implementamos de inmediato el vector integrador universal $e^{k\beta t}$:
+\begin{equation*}
+    \frac{d}{dt} \left( z e^{k\beta t} \right) = \beta e^{k\beta t} \implies z e^{k\beta t} = \int \beta e^{k\beta t} dt = \frac{1}{k} e^{k\beta t} + C \implies z(t) = \frac{1}{k} + C e^{-k\beta t}
+\end{equation*}
+
+Fijando el encaje paramétrico inicial en $z(0) = 1/I_0$, procedemos a resolver la constante $C = \frac{1}{I_0} - \frac{1}{k} = \frac{k - I_0}{k I_0}$. 
+Restituyendo la función incógnita física $I(t) = 1/z(t)$, obtenemos de forma inmaculada la curva epidémica final:
+\begin{equation*}
+    I(t) = \frac{1}{\frac{1}{k} + C e^{-k\beta t}} = \frac{k}{1 + k C e^{-k\beta t}} = \frac{k}{1 + \left(\frac{k}{I_0} - 1\right) e^{-k\beta t}}
+\end{equation*}
+
+Resulta imperativo observar cómo el parámetro $k$ ejerce de atractor topológico del sistema en el límite termodinámico; independientemente del foco semilla de transmisión $I_0$, la población vírica se estanca permanentemente en $k$. Esta fenomenología solo es consistente en la realidad si el parámetro $k$ supera al inóculo inicial ($k > I_0$) y permanece inherentemente estricto ($k > 0$).
+\end{proof}
+
+\end{document}
