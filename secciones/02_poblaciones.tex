@@ -78,15 +78,13 @@ El modelo es autosostenible: evita la catástrofe demográfica en la que la pobl
   \begin{tikzpicture}
     \begin{axis}[informe, xmin=0, xmax=10, ymin=0, ymax=170,
       xlabel={$t$}, ylabel={$P$},
-      legend style={at={(0.97,0.55)}}]
+      legend style={at={(0.97,0.12)}, anchor=south east}]
       \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
       \node[font=\small, text=gris, anchor=north west] at (axis cs:0.2,98) {$M$};
       \addplot[serie1, domain=0:10, samples=100] {1000/(10+90*exp(-0.8*x))};
       \addlegendentry{$P_0<M$}
       \addplot[serie2, domain=0:10, samples=100] {16000/(160-60*exp(-0.8*x))};
       \addlegendentry{$P_0>M$}
-      \addplot[serie3, domain=0:10, samples=100] {0};
-      \addlegendentry{$P=0$}
     \end{axis}
   \end{tikzpicture}
   \caption{Soluciones logísticas con $M=100$ y $rM=0{,}8$. Si $P_0<M$ la curva es sigmoidea; si $P_0>M$ decrece monótonamente hacia $M$.}
@@ -150,7 +148,7 @@ La población crece rápidamente hasta $P_i=M/\ee\approx 0{,}37\,M$ y, a partir 
     \centering
     \begin{tikzpicture}
       \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=10, ymin=0, ymax=110,
-        xlabel={$t$}, ylabel={$P$}, legend style={at={(0.97,0.4)}}]
+        xlabel={$t$}, ylabel={$P$}, legend style={at={(0.97,0.04)}, anchor=south east}]
         \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
         \addplot[serie1, domain=0:10, samples=100] {100*exp(ln(0.03)*exp(-0.5*x))};
         \addlegendentry{$P_0/M=\tfrac1{30}$}
@@ -166,7 +164,7 @@ La población crece rápidamente hasta $P_i=M/\ee\approx 0{,}37\,M$ y, a partir 
     \centering
     \begin{tikzpicture}
       \begin{axis}[informe, width=\linewidth, height=5.4cm, xmin=0, xmax=10, ymin=0, ymax=110,
-        xlabel={$t$}, ylabel={$P$}, legend style={at={(0.97,0.2)}, anchor=south east}]
+        xlabel={$t$}, ylabel={$P$}, legend style={at={(0.97,0.04)}, anchor=south east}]
         \addplot[asintota, forget plot, domain=0:10, samples=2] {100};
         \addplot[serie1, domain=0:10, samples=100] {100*exp(ln(0.03)*exp(-0.5*x))};
         \addlegendentry{Gompertz}
@@ -174,8 +172,8 @@ La población crece rápidamente hasta $P_i=M/\ee\approx 0{,}37\,M$ y, a partir 
         \addlegendentry{Logística}
         \addplot[only marks, mark=*, mark size=1.6pt, color=azulOscuro, forget plot] coordinates {(2.35,36.79)};
         \addplot[only marks, mark=square*, mark size=1.6pt, color=azulMedio, forget plot] coordinates {(5.38,50)};
-        \node[font=\scriptsize, anchor=east, text=azulOscuro] at (axis cs:2.2,45) {$M/\ee$};
-        \node[font=\scriptsize, anchor=west, text=azulMedio] at (axis cs:5.6,42) {$M/2$};
+        \node[font=\scriptsize, anchor=south east, text=azulOscuro, inner sep=2pt] at (axis cs:2.3,41) {$M/\ee$};
+        \node[font=\scriptsize, anchor=north west, text=azulMedio, inner sep=2pt] at (axis cs:5.6,46) {$M/2$};
       \end{axis}
     \end{tikzpicture}
     \caption{Comparación con la logística; se indican los puntos de inflexión.}

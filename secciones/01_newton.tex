@@ -70,7 +70,7 @@ La magnitud $\tau=1/k$ es la \emph{constante de tiempo}: la diferencia $T-S_0$ s
       xlabel={$t$ (\si{\minute})}, ylabel={$T$ (\si{\celsius})},
       legend style={at={(0.97,0.62)}}]
       \addplot[asintota, forget plot, domain=0:120, samples=2] {20};
-      \node[font=\small, text=gris, anchor=south east] at (axis cs:118,21) {$S_0$};
+      \node[font=\small, text=gris, anchor=south west] at (axis cs:3,21.5) {$S_0$};
       \addplot[serie1, domain=0:120, samples=100] {20 + 90*exp(-0.04*x)};
       \addlegendentry{Enfriamiento ($T_0>S_0$)}
       \addplot[serie2, domain=0:120, samples=100] {20 - 15*exp(-0.04*x)};

@@ -325,7 +325,7 @@ En los tres casos,
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
-    \begin{axis}[informe, xmin=0, xmax=8, ymin=0, ymax=0.45,
+    \begin{axis}[informe, xmin=0, xmax=8, ymin=0, ymax=0.56,
       xlabel={$t$ (con $R/L=1$, $U_0/L=1$)}, ylabel={$I$}, legend columns=2,
       legend style={at={(0.97,0.95)}, anchor=north east},
       declare function={ rl(\t,\a)=(exp(-\a*\t)-exp(-\t))/(1-\a); }]
@@ -369,9 +369,9 @@ El carbono-14 tiene $\tau\approx\num{5730}$ años. Una muestra conserva el 12,5\
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
-    \begin{axis}[informe, width=0.8\linewidth, height=5.6cm, xmin=0, xmax=4.2, ymin=0, ymax=1.05,
+    \begin{axis}[informe, width=0.8\linewidth, height=6.4cm, xmin=0, xmax=4.2, ymin=0, ymax=1.05,
       xlabel={$t/\tau$}, ylabel={$Q/Q_0$}, xtick={0,1,2,3,4}, ytick={0,0.125,0.25,0.5,1},
-      yticklabels={$0$,$\tfrac18$,$\tfrac14$,$\tfrac12$,$1$}]
+      yticklabels={$0$,$0{,}125$,$0{,}25$,$0{,}5$,$1$}]
       \addplot[serie1, domain=0:4.2, samples=100] {2^(-x)};
       \addplot[only marks, mark=*, mark size=1.6pt, color=azulOscuro]
         coordinates {(0,1) (1,0.5) (2,0.25) (3,0.125)};

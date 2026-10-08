@@ -66,25 +66,26 @@ Si $T$ es el periodo, integrando $\dot y/y=-\gamma+\delta x$ sobre un ciclo se o
   \begin{subfigure}[t]{0.52\linewidth}
     \centering
     \begin{tikzpicture}
-      \begin{axis}[informe, width=\linewidth, height=6.4cm, xmin=0, xmax=3.3, ymin=0, ymax=3.3,
+      \begin{axis}[informe, width=\linewidth, height=6.4cm, xmin=0, xmax=3.8, ymin=0, ymax=3.8,
         xlabel={$x$ (presas)}, ylabel={$y$ (depredadores)}]
-        \addplot[quiver={u=\thisrow{u},v=\thisrow{v},scale arrows=0.2},
-                 -{Stealth[length=2.4pt]}, color=azulClaro, forget plot]
-          table[x=x,y=y]{figuras/datos/lv_campo.dat};
         \addplot[serie3, forget plot] table[x=x,y=y]{figuras/datos/lv_orbita_c.dat};
         \addplot[serie2, forget plot] table[x=x,y=y]{figuras/datos/lv_orbita_b.dat};
         \addplot[serie1, forget plot] table[x=x,y=y]{figuras/datos/lv_orbita_a.dat};
-        \addplot[asintota, forget plot, domain=0:3.3, samples=2] {1};
-        \addplot[asintota, forget plot] coordinates {(1,0) (1,3.3)};
+        \addplot[asintota, forget plot, domain=0:3.8, samples=2] {1};
+        \addplot[asintota, forget plot] coordinates {(1,0) (1,3.8)};
         \addplot[only marks, mark=*, mark size=1.8pt, color=azulOscuro, forget plot] coordinates {(1,1)};
-        \node[font=\scriptsize, anchor=north west, text=azulOscuro, fill=white, inner sep=1pt] at (axis cs:1.03,0.97) {$(x^\ast,y^\ast)$};
-        \node[font=\footnotesize, text=gris] at (axis cs:2.15,0.62) {I};
-        \node[font=\footnotesize, text=gris] at (axis cs:2.15,1.75) {II};
-        \node[font=\footnotesize, text=gris] at (axis cs:0.5,1.75) {III};
-        \node[font=\footnotesize, text=gris] at (axis cs:0.5,0.62) {IV};
+        \node[font=\scriptsize, anchor=south west, text=azulOscuro, inner sep=2pt] at (axis cs:1.03,1.0) {$(x^\ast,y^\ast)$};
+        \node[font=\footnotesize, text=azulOscuro] at (axis cs:1.5,0.68) {I};
+        \node[font=\footnotesize, text=azulOscuro] at (axis cs:1.5,1.42) {II};
+        \node[font=\footnotesize, text=azulOscuro] at (axis cs:0.62,1.42) {III};
+        \node[font=\footnotesize, text=azulOscuro] at (axis cs:0.62,0.68) {IV};
+        \draw[-{Stealth[length=4pt]}, color=azulMedio, thick] (axis cs:2.846,0.8) -- (axis cs:2.846,1.2);
+        \draw[-{Stealth[length=4pt]}, color=azulMedio, thick] (axis cs:1.2,2.846) -- (axis cs:0.8,2.846);
+        \draw[-{Stealth[length=4pt]}, color=azulMedio, thick] (axis cs:0.2024,1.2) -- (axis cs:0.2024,0.8);
+        \draw[-{Stealth[length=4pt]}, color=azulMedio, thick] (axis cs:0.8,0.2024) -- (axis cs:1.2,0.2024);
       \end{axis}
     \end{tikzpicture}
-    \caption{Órbitas $H=c$ ($c=2{,}3;\ 2{,}8;\ 3{,}4$) y campo de direcciones.}
+    \caption{Órbitas $H=c$ ($c=2{,}3;\ 2{,}8;\ 3{,}4$), con el sentido de recorrido y las cuatro fases.}
   \end{subfigure}\hfill
   \begin{subfigure}[t]{0.44\linewidth}
     \centering
@@ -139,7 +140,7 @@ En todo instante, la velocidad del zorro apunta hacia el conejo.
       \node[font=\footnotesize, anchor=south, text=azulOscuro] at (axis cs:1,0.02) {zorro};
       \node[font=\footnotesize, anchor=west, text=gris] at (axis cs:0.55,0.24) {línea de visión};
       \draw[-{Stealth}, color=azulOscuro, thick] (axis cs:0.5,0.0774) -- (axis cs:0.40,0.1130);
-      \node[font=\footnotesize, anchor=south, text=azulOscuro] at (axis cs:0.36,0.135) {$\bm v$};
+      \node[font=\footnotesize, anchor=south, text=azulOscuro] at (axis cs:0.30,0.172) {$\bm v$};
     \end{axis}
   \end{tikzpicture}
   \caption{Geometría de la persecución ($k=1/2$). La velocidad del zorro es tangente a su trayectoria y apunta al conejo, de modo que $y'=-(\hat y-y)/x$.}
